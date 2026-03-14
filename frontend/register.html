@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AssetFlow | สมัครสมาชิก</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap');
+
+        :root {
+            --dark-green: #0A3323;
+            --moss-green: #839958;
+            --beige: #F7F4D5;
+            --midnight-green: #105666;
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            margin: 0;
+            background-color: var(--beige);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: url('bg.jpg') center/cover no-repeat; /* ใช้ภาพพื้นหลังเดียวกัน */
+            position: relative;
+        }
+
+        /* Overlay ให้พื้นหลังดูซอฟต์ลง */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 51, 35, 0.7); /* สีเขียวโปร่งแสงทับพื้นหลัง */
+            z-index: 1;
+        }
+
+        .register-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 480px;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .logo-image {
+            width: 100px; height: 100px; object-fit: contain;
+            margin-bottom: 15px; border-radius: 50%;
+        }
+
+        h2 { color: var(--dark-green); font-weight: 500; margin-bottom: 5px; }
+        p { color: var(--midnight-green); font-size: 0.9rem; margin-bottom: 25px; }
+
+        .form-control {
+            border-radius: 12px;
+            padding: 12px;
+            border: 1.5px solid #eee;
+            margin-bottom: 15px;
+            background-color: #fdfdfd;
+        }
+
+        .form-control:focus {
+            border-color: var(--moss-green);
+            box-shadow: 0 0 0 0.25rem rgba(131, 153, 88, 0.1);
+        }
+
+        .btn-register {
+            border-radius: 12px;
+            padding: 14px;
+            font-weight: 500;
+            width: 100%;
+            background-color: var(--dark-green);
+            border: none;
+            color: var(--beige);
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .btn-register:hover {
+            background-color: var(--midnight-green);
+            transform: translateY(-2px);
+        }
+
+        .login-link {
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .login-link a {
+            color: var(--midnight-green);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .login-link a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="register-content">
+    <img src="logo.jpg" alt="Logo" class="logo-image">
+    <h2>สมัครสมาชิก</h2>
+    <p>สร้างบัญชีใหม่สำหรับ Asset Flows</p>
+
+    <form id="registerForm">
+        <input type="email" class="form-control" placeholder="อีเมล" required>
+
+        <div class="row g-2">
+            <div class="col-6">
+                <input type="text" id="firstName" class="form-control" placeholder="ชื่อ" required>
+            </div>
+            <div class="col-6">
+                <input type="text" id="lastName" class="form-control" placeholder="นามสกุล" required>
+            </div>
+        </div>
+
+
+        <input type="password" class="form-control" placeholder="รหัสผ่าน" required>
+
+        <input type="password" class="form-control" placeholder="ยืนยันรหัสผ่าน" required>
+
+        <button type="submit" class="btn btn-register shadow-sm">สมัครสมาชิก</button>
+    </form>
+
+    <div class="login-link">
+        <span class="text-muted">มีบัญชีอยู่แล้ว?</span> <a href="borrow.html">เข้าสู่ระบบ</a>
+    </div>
+</div>
+
+<script>
+    // ฟังก์ชันรวมชื่ออัตโนมัติ (ตามรูปตัวอย่าง)
+    const firstName = document.getElementById('firstName');
+    const lastName = document.getElementById('lastName');
+    const displayName = document.getElementById('displayName');
+
+    function updateDisplayName() {
+        displayName.value = `${firstName.value} ${lastName.value}`.trim();
+    }
+
+    firstName.addEventListener('input', updateDisplayName);
+    lastName.addEventListener('input', updateDisplayName);
+
+    // จัดการการสมัครสมาชิก
+    document.getElementById('registerForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบ');
+        window.location.href = 'borrow.html';
+    });
+</script>
+
+</body>
+</html>
