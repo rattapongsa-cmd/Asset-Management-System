@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +23,11 @@
             background-color: var(--beige);
         }
 
-        .main-container { display: flex; height: 100vh; overflow: hidden; }
+        .main-container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
 
         .image-side {
             flex: 1.2;
@@ -31,191 +36,251 @@
         }
 
         .image-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: linear-gradient(135deg, rgba(10, 51, 35, 0.85), rgba(16, 86, 102, 0.7));
-            display: flex; align-items: center; justify-content: center; color: var(--beige); padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--beige);
+            padding: 40px;
         }
 
-        .form-side { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; }
+        .form-side {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
 
         .form-content {
-            width: 100%; max-width: 420px; background: #ffffff;
-            padding: 40px; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 420px;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
-        .logo-image { width: 120px; height: 120px; object-fit: contain; margin-bottom: 20px; border-radius: 50%; }
+        .logo-image {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            border-radius: 50%;
+        }
 
-        h4 { color: var(--dark-green); font-weight: 500; margin-bottom: 25px; }
+        h4 {
+            color: var(--dark-green);
+            font-weight: 500;
+            margin-bottom: 25px;
+        }
 
-        .label-custom { color: var(--moss-green); font-weight: 500; font-size: 0.9rem; margin-bottom: 8px; display: block; text-align: left; }
+        .label-custom {
+            color: var(--moss-green);
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: block;
+            text-align: left;
+        }
 
-        .form-control, .form-select { border-radius: 12px; padding: 12px; border: 1.5px solid #eee; margin-bottom: 15px; }
+        .form-control,
+        .form-select {
+            border-radius: 12px;
+            padding: 12px;
+            border: 1.5px solid #eee;
+            margin-bottom: 15px;
+        }
 
         .btn-primary {
-            border-radius: 12px; padding: 15px; font-weight: 500; width: 100%;
-            background-color: var(--dark-green); border: none; color: var(--beige);
-            margin-top: 10px; transition: 0.3s;
+            border-radius: 12px;
+            padding: 15px;
+            font-weight: 500;
+            width: 100%;
+            background-color: var(--dark-green);
+            border: none;
+            color: var(--beige);
+            margin-top: 10px;
+            transition: 0.3s;
         }
 
-        .btn-primary:hover { background-color: var(--midnight-green); transform: translateY(-2px); }
+        .btn-primary:hover {
+            background-color: var(--midnight-green);
+            transform: translateY(-2px);
+        }
 
-        #borrowFormSection { display: none; }
-        .welcome-text h1 { font-size: 3.5rem; font-weight: 600; margin-bottom: 15px; letter-spacing: 2px; }
+        #borrowFormSection {
+            display: none;
+        }
+
+        .welcome-text h1 {
+            font-size: 3.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
     </style>
 </head>
+
 <body>
 
-<div class="main-container">
-    <div class="image-side">
-        <div class="image-overlay">
-            <div class="welcome-text text-center">
-                <h1>ASSET FLOW</h1>
-                <h3 class="mb-3" style="font-weight: 400;">ระบบจัดการทรัพย์สินและอุปกรณ์ไอที</h3>
-                <p style="font-weight: 300; opacity: 0.9; line-height: 1.8;">
-                    บันทึกทรัพย์สินองค์กร • ติดตามสถานะเรียลไทม์<br>
-                    จัดการการยืม-คืนอุปกรณ์ • ออกรายงานประจำปีแม่นยำ
-                </p>
+    <div class="main-container">
+        <div class="image-side">
+            <div class="image-overlay">
+                <div class="welcome-text text-center">
+                    <h1>ASSET FLOW</h1>
+                    <h3 class="mb-3" style="font-weight: 400;">ระบบจัดการทรัพย์สินและอุปกรณ์ไอที</h3>
+                    <p style="font-weight: 300; opacity: 0.9; line-height: 1.8;">
+                        บันทึกทรัพย์สินองค์กร • ติดตามสถานะเรียลไทม์<br>
+                        จัดการการยืม-คืนอุปกรณ์ • ออกรายงานประจำปีแม่นยำ
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-side">
+            <div class="form-content shadow">
+
+                <div id="loginSection">
+                    <img src="logo.jpg" alt="Logo" class="logo-image">
+                    <h4>เข้าสู่ระบบเพื่อทำรายการยืม</h4>
+                    <form id="loginForm">
+                        <span class="label-custom">Username (Email)</span>
+                        <input type="text" id="username" class="form-control" placeholder="example@email.com" required>
+                        <span class="label-custom">Password</span>
+                        <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                        <button type="submit" class="btn btn-primary">เข้าสู่ระบบ</button>
+                        <div class="mt-3 text-center" style="font-size: 0.9rem;">
+                            <span class="text-muted">ยังไม่มีบัญชี?</span>
+                            <a href="register.html"
+                                style="color: var(--midnight-green); text-decoration: none; font-weight: 500;">สมัครสมาชิก</a>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="borrowFormSection">
+                    <img src="logo.jpg" alt="Logo" class="logo-image">
+                    <h4>รายละเอียดการยืมทรัพย์สิน</h4>
+                    <form id="borrowForm">
+                        <span class="label-custom">รายการอุปกรณ์ไอที</span>
+                        <select id="assetSelect" class="form-select" required>
+                            <option value="">-- กำลังโหลดข้อมูลอุปกรณ์ --</option>
+                        </select>
+                        <span class="label-custom">วันที่กำหนดคืน</span>
+                        <input type="date" id="returnDate" class="form-control" required>
+                        <span class="label-custom">เหตุผลการใช้งาน</span>
+                        <textarea id="reason" class="form-control" rows="3" placeholder="ระบุเหตุผล..."></textarea>
+                        <button type="submit" class="btn btn-primary">ยืนยันการทำรายการยืม</button>
+                        <button type="button" onclick="location.reload()" class="btn btn-link w-100 text-muted mt-2"
+                            style="text-decoration: none;">ยกเลิก</button>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <div class="form-side">
-        <div class="form-content shadow">
-            
-            <div id="loginSection">
-                <img src="logo.jpg" alt="Logo" class="logo-image">
-                <h4>เข้าสู่ระบบเพื่อทำรายการยืม</h4>
-                <form id="loginForm">
-                    <span class="label-custom">Username (Email)</span>
-                    <input type="text" id="username" class="form-control" placeholder="example@email.com" required>
-                    <span class="label-custom">Password</span>
-                    <input type="password" id="password" class="form-control" placeholder="••••••••" required>
-                    <button type="submit" class="btn btn-primary">เข้าสู่ระบบ</button>
-                    <div class="mt-3 text-center" style="font-size: 0.9rem;">
-                        <span class="text-muted">ยังไม่มีบัญชี?</span> 
-                        <a href="register.html" style="color: var(--midnight-green); text-decoration: none; font-weight: 500;">สมัครสมาชิก</a>
-                    </div>
-                </form>
-            </div>
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        let loggedInUser = "";
 
-            <div id="borrowFormSection">
-                <img src="logo.jpg" alt="Logo" class="logo-image">
-                <h4>รายละเอียดการยืมทรัพย์สิน</h4>
-                <form id="borrowForm">
-                    <span class="label-custom">รายการอุปกรณ์ไอที</span>
-                    <select id="assetSelect" class="form-select" required>
-                        <option value="">-- กำลังโหลดข้อมูลอุปกรณ์ --</option>
-                    </select>
-                    <span class="label-custom">วันที่กำหนดคืน</span>
-                    <input type="date" id="returnDate" class="form-control" required>
-                    <span class="label-custom">เหตุผลการใช้งาน</span>
-                    <textarea id="reason" class="form-control" rows="3" placeholder="ระบุเหตุผล..."></textarea>
-                    <button type="submit" class="btn btn-primary">ยืนยันการทำรายการยืม</button>
-                    <button type="button" onclick="location.reload()" class="btn btn-link w-100 text-muted mt-2" style="text-decoration: none;">ยกเลิก</button>
-                </form>
-            </div>
+        // 1. ฟังก์ชันจัดการ Login (ตรวจสอบรหัสผ่านจริง)
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-        </div>
-    </div>
-</div>
+            const usernameInput = document.getElementById('username').value;
+            const passwordInput = document.getElementById('password').value;
 
-<script>
-    const API_URL = 'http://localhost:3000/api';
-    let loggedInUser = "";
-
-    // 1. ฟังก์ชันจัดการ Login (ตรวจสอบรหัสผ่านจริง)
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const usernameInput = document.getElementById('username').value;
-        const passwordInput = document.getElementById('password').value;
-
-        try {
-            const res = await fetch(`${API_URL}/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: usernameInput, password: passwordInput })
-            });
-
-            const result = await res.json();
-
-            if (res.ok && result.success) {
-                loggedInUser = result.user.display_name;
-                
-                // สลับหน้าจอ
-                document.getElementById('loginSection').style.setProperty('display', 'none', 'important');
-                document.getElementById('borrowFormSection').style.setProperty('display', 'block', 'important');
-                
-                // เรียกฟังก์ชันโหลดอุปกรณ์ (แก้ชื่อให้ตรงกับประกาศด้านล่าง)
-                loadAvailableAssets(); 
-                
-                alert(`ยินดีต้อนรับคุณ ${loggedInUser}`);
-            } else {
-                alert(result.message || 'ข้อมูลไม่ถูกต้อง');
-            }
-        } catch (err) {
-            alert('ไม่สามารถเชื่อมต่อ Server ได้ กรุณารัน node index.js');
-        }
-    });
-
-    // 2. ฟังก์ชันโหลดรายการอุปกรณ์จาก webdb
-    async function loadAvailableAssets() {
-        const select = document.getElementById('assetSelect');
-        try {
-            const res = await fetch(`${API_URL}/assets`);
-            const assets = await res.json();
-            
-            select.innerHTML = '<option value="">-- เลือกอุปกรณ์ --</option>';
-
-            // กรองสถานะ 'active' (ตัดช่องว่างและตัวเล็กตัวใหญ่)
-            const available = assets.filter(a => 
-                a.status && a.status.toString().toLowerCase().trim() === 'active'
-            );
-
-            if (available.length === 0) {
-                select.innerHTML = '<option value="">-- ไม่มีอุปกรณ์ว่าง --</option>';
-            } else {
-                available.forEach(asset => {
-                    const opt = document.createElement('option');
-                    opt.value = asset.id;
-                    opt.textContent = `${asset.asset_code} | ${asset.name}`;
-                    select.appendChild(opt);
+            try {
+                const res = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: usernameInput, password: passwordInput })
                 });
+
+                const result = await res.json();
+
+                if (res.ok && result.success) {
+                    // เก็บชื่อผู้ใช้ไว้ใน SessionStorage เพื่อเอาไปแสดงที่หน้า Dashboard
+                    sessionStorage.setItem('displayName', result.user.display_name);
+
+                    alert(`ยินดีต้อนรับคุณ ${result.user.display_name}`);
+
+                    // 🔥 จุดสำคัญ: เปลี่ยนจากสลับหน้าจอ เป็นการเด้งไปหน้า Dashboard
+                    window.location.href = 'dashboard.html';
+
+                } else {
+                    alert(result.message || 'ข้อมูลไม่ถูกต้อง');
+                }
+            } catch (err) {
+                alert('ไม่สามารถเชื่อมต่อ Server ได้ กรุณารัน node index.js');
             }
-        } catch (err) {
-            console.error("Error loading assets:", err);
-            select.innerHTML = '<option value="">-- โหลดข้อมูลล้มเหลว --</option>';
-        }
-    }
+        });
 
-    // 3. ฟังก์ชันบันทึกการยืม
-    document.getElementById('borrowForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = {
-            asset_id: document.getElementById('assetSelect').value,
-            borrower_name: loggedInUser,
-            borrow_date: new Date().toISOString().split('T')[0],
-            return_date: document.getElementById('returnDate').value,
-            reason: document.getElementById('reason').value
-        };
+        // 2. ฟังก์ชันโหลดรายการอุปกรณ์จาก webdb
+        async function loadAvailableAssets() {
+            const select = document.getElementById('assetSelect');
+            try {
+                const res = await fetch(`${API_URL}/assets`);
+                const assets = await res.json();
 
-        try {
-            const res = await fetch(`${API_URL}/borrow`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
+                select.innerHTML = '<option value="">-- เลือกอุปกรณ์ --</option>';
 
-            if (res.ok) {
-                alert('บันทึกการยืมสำเร็จ!');
-                window.location.reload(); 
+                // กรองสถานะ 'active' (ตัดช่องว่างและตัวเล็กตัวใหญ่)
+                const available = assets.filter(a =>
+                    a.status && a.status.toString().toLowerCase().trim() === 'active'
+                );
+
+                if (available.length === 0) {
+                    select.innerHTML = '<option value="">-- ไม่มีอุปกรณ์ว่าง --</option>';
+                } else {
+                    available.forEach(asset => {
+                        const opt = document.createElement('option');
+                        opt.value = asset.id;
+                        opt.textContent = `${asset.asset_code} | ${asset.name}`;
+                        select.appendChild(opt);
+                    });
+                }
+            } catch (err) {
+                console.error("Error loading assets:", err);
+                select.innerHTML = '<option value="">-- โหลดข้อมูลล้มเหลว --</option>';
             }
-        } catch (err) {
-            alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
         }
-    });
-</script>
+
+        // 3. ฟังก์ชันบันทึกการยืม
+        document.getElementById('borrowForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                asset_id: document.getElementById('assetSelect').value,
+                borrower_name: loggedInUser,
+                borrow_date: new Date().toISOString().split('T')[0],
+                return_date: document.getElementById('returnDate').value,
+                reason: document.getElementById('reason').value
+            };
+
+            try {
+                const res = await fetch(`${API_URL}/borrow`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (res.ok) {
+                    alert('บันทึกการยืมสำเร็จ!');
+                    window.location.reload();
+                }
+            } catch (err) {
+                alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+            }
+        });
+    </script>
 
 </body>
+
 </html>
