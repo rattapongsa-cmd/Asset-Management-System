@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql_db
--- Generation Time: Mar 15, 2026 at 02:48 PM
+-- Generation Time: Mar 16, 2026 at 05:59 PM
 -- Server version: 9.6.0
 -- PHP Version: 8.3.30
 
@@ -32,7 +32,7 @@ CREATE TABLE `assets` (
   `asset_code` varchar(50) NOT NULL,
   `name` varchar(255) NOT NULL,
   `category` enum('IT','Furniture','Office','Other') DEFAULT 'IT',
-  `status` enum('active','repair','broken','retired') DEFAULT 'active',
+  `status` enum('active','borrowing','repair') NOT NULL DEFAULT 'active',
   `location` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -43,11 +43,43 @@ CREATE TABLE `assets` (
 
 INSERT INTO `assets` (`id`, `asset_code`, `name`, `category`, `status`, `location`, `created_at`) VALUES
 (1, 'NB-001', 'Laptop Dell XPS', 'IT', 'active', NULL, '2026-03-14 14:50:25'),
-(2, 'NB-002', 'MacBook Air M2', 'IT', 'active', NULL, '2026-03-14 14:50:25'),
+(2, 'NB-002', 'MacBook Air M2', 'IT', 'borrowing', NULL, '2026-03-14 14:50:25'),
 (3, 'CAM-01', 'Canon EOS R6', 'IT', 'active', NULL, '2026-03-14 14:50:25'),
 (4, 'IT-001', 'MacBook Pro M3', 'IT', 'active', NULL, '2026-03-14 15:27:35'),
 (5, 'IT-002', 'iPad Pro 11\"', 'IT', 'active', NULL, '2026-03-14 15:27:35'),
 (15, 'IT-003', 'Monitor Dell 27\"', 'IT', 'active', NULL, '2026-03-14 15:42:51');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `borrow_logs`
+--
+
+CREATE TABLE `borrow_logs` (
+  `id` int NOT NULL,
+  `asset_id` int NOT NULL,
+  `borrower_name` varchar(255) NOT NULL,
+  `borrow_date` date NOT NULL,
+  `return_date` date NOT NULL,
+  `reason` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `borrow_logs`
+--
+
+INSERT INTO `borrow_logs` (`id`, `asset_id`, `borrower_name`, `borrow_date`, `return_date`, `reason`, `created_at`) VALUES
+(1, 1, 'Admin', '2026-03-16', '2026-03-21', '', '2026-03-16 17:04:23'),
+(2, 1, 'Admin', '2026-03-16', '2026-03-21', '', '2026-03-16 17:04:52'),
+(3, 2, 'Admin', '2026-03-16', '2026-03-21', '', '2026-03-16 17:05:26'),
+(4, 3, 'Admin', '2026-03-16', '2026-03-20', '', '2026-03-16 17:12:31'),
+(5, 4, 'Admin', '2026-03-16', '2026-03-28', '', '2026-03-16 17:12:53'),
+(6, 1, 'Rattapong Saiyaphang', '2026-03-16', '2026-03-20', '', '2026-03-16 17:38:53'),
+(7, 1, 'Rattapong Saiyaphang', '2026-03-16', '2026-03-21', '', '2026-03-16 17:39:30'),
+(8, 2, 'Rattapong Saiyaphang', '2026-03-16', '2026-03-18', '', '2026-03-16 17:42:36'),
+(9, 1, 'Rattapong Saiyaphang', '2026-03-16', '2026-03-20', '', '2026-03-16 17:48:03'),
+(10, 2, 'Rattapong Saiyaphang', '2026-03-16', '2026-03-21', '', '2026-03-16 17:48:11');
 
 -- --------------------------------------------------------
 
@@ -62,14 +94,6 @@ CREATE TABLE `projects` (
   `user_id` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `projects`
---
-
-INSERT INTO `projects` (`id`, `name`, `description`, `user_id`, `created_at`) VALUES
-(1, 'เว็บไซต์บริษัท', 'พัฒนาเว็บไซต์หลักของบริษัท', 1, '2026-03-14 13:57:33'),
-(2, 'แอปมือถือ', 'พัฒนาแอปสำหรับลูกค้า', 2, '2026-03-14 13:57:33');
 
 -- --------------------------------------------------------
 
@@ -108,15 +132,6 @@ CREATE TABLE `tasks` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `tasks`
---
-
-INSERT INTO `tasks` (`id`, `title`, `description`, `status`, `project_id`, `assigned_user_id`, `created_at`) VALUES
-(1, 'ออกแบบ UI หน้าแรก', 'ออกแบบ mockup หน้า landing page', 'todo', 1, 1, '2026-03-14 13:57:33'),
-(2, 'สร้าง API login', 'เขียน endpoint สำหรับ authentication', 'in_progress', 1, 2, '2026-03-14 13:57:33'),
-(3, 'แก้บัค login ไม่ได้', 'user บางคน login ไม่ผ่าน', 'todo', 2, 1, '2026-03-14 13:57:33');
-
 -- --------------------------------------------------------
 
 --
@@ -127,16 +142,6 @@ CREATE TABLE `task_tags` (
   `task_id` int NOT NULL,
   `tag_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `task_tags`
---
-
-INSERT INTO `task_tags` (`task_id`, `tag_id`) VALUES
-(3, 1),
-(2, 2),
-(3, 3),
-(1, 4);
 
 -- --------------------------------------------------------
 
@@ -173,11 +178,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `firstname`, `lastname`, `display_name`, `password`) VALUES
-(1, 'ชาย', '', 'ใจดี', 'สมชาย', '25'),
-(2, 'หญิง', '', 'รักเรียน', 'สมหญิง', '22'),
 (3, 'test@email.com', '', '', 'Admin', '123456'),
 (4, '', '', '', '', ''),
-(5, 'rattapong980@gmail.com', 'Rattapong', 'Saiyaphang', 'Rattapong Saiyaphang', '11');
+(5, 'rattapong980@gmail.com', 'Rattapong', 'Saiyaphang', 'Rattapong Saiyaphang', '11'),
+(6, 'nachaphat16149@gmail.com', 'nachaphat', 'hasatangsaikaew', 'nachaphat hasatangsaikaew', '12345678');
 
 --
 -- Indexes for dumped tables
@@ -189,6 +193,13 @@ INSERT INTO `users` (`id`, `email`, `firstname`, `lastname`, `display_name`, `pa
 ALTER TABLE `assets`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `asset_code` (`asset_code`);
+
+--
+-- Indexes for table `borrow_logs`
+--
+ALTER TABLE `borrow_logs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `asset_id` (`asset_id`);
 
 --
 -- Indexes for table `projects`
@@ -244,6 +255,12 @@ ALTER TABLE `assets`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
+-- AUTO_INCREMENT for table `borrow_logs`
+--
+ALTER TABLE `borrow_logs`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
@@ -271,11 +288,17 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `borrow_logs`
+--
+ALTER TABLE `borrow_logs`
+  ADD CONSTRAINT `borrow_logs_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `assets` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `projects`
