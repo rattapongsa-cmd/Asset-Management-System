@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
+const nodemailer = require('nodemailer'); 
 const app = express();
 
 app.use(cors());
@@ -23,42 +24,33 @@ db.connect(err => {
     console.log('✅ Connected to MySQL (webdb) Successfully!');
 });
 
-// 2. API: สมัครสมาชิก (Register) - บันทึกข้อมูลลงตาราง users
+// ✨ การตั้งค่า Nodemailer (ใช้ Gmail App Password)
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'rattapong980@gmail.com',     // 📧 อีเมลเจ้าของรหัส App Password
+        pass: 'hrlnwvdyyzcowdzm'          // 🔑 รหัส 16 หลัก (ลบช่องว่างออกให้หมด)
+    }
+});
+
+// 2. API: สมัครสมาชิก
 app.post('/api/register', (req, res) => {
     const { email, firstname, lastname, display_name, password } = req.body;
-
-    // ตรวจสอบว่าค่าที่รับมามีตัวตนไหม (กัน Error ค่าว่าง)
-    if (!email || !password) {
-        return res.status(400).json({ success: false, message: 'กรุณากรอกข้อมูลให้ครบ' });
-    }
-
-    // แก้ชื่อคอลัมน์ให้ตรงตาม Structure ใน phpMyAdmin (firstname, lastname ตัวเล็กหมด)
     const sql = "INSERT INTO users (email, firstname, lastname, display_name, password) VALUES (?, ?, ?, ?, ?)";
-
     db.query(sql, [email, firstname, lastname, display_name, password], (err, result) => {
-        if (err) {
-            console.error("❌ SQL Error:", err); // ดูที่ Terminal จะเห็นสาเหตุจริง
-
-            // ถ้า Error Code คือ ER_DUP_ENTRY แสดงว่าเมลซ้ำจริง
-            if (err.code === 'ER_DUP_ENTRY') {
-                return res.status(500).json({ success: false, message: 'อีเมลนี้ถูกใช้งานไปแล้ว' });
-            }
-
-            // ถ้า Error อื่นๆ (เช่น คอลัมน์ไม่ครบ) ให้ส่งบอกว่าเป็นปัญหาที่ระบบ
-            return res.status(500).json({ success: false, message: 'เกิดข้อผิดพลาดที่ระบบฐานข้อมูล: ' + err.message });
-        }
+        if (err) return res.status(500).json({ success: false, message: err.message });
         res.json({ success: true, message: 'สมัครสมาชิกสำเร็จ!' });
     });
 });
 
-// 3. API: เข้าสู่ระบบ (Login)
+// 3. API: เข้าสู่ระบบ
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
     const sql = "SELECT * FROM users WHERE email = ? AND password = ?";
     db.query(sql, [username, password], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         if (results.length > 0) {
-            res.json({ success: true, user: { display_name: results[0].display_name } });
+            res.json({ success: true, user: { display_name: results[0].display_name, email: results[0].email } });
         } else {
             res.status(401).json({ success: false, message: 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' });
         }
@@ -67,7 +59,6 @@ app.post('/api/login', (req, res) => {
 
 // 4. API: ดึงข้อมูลอุปกรณ์
 app.get('/api/assets', (req, res) => {
-    // ดึงข้อมูลทั้งหมดมาทำ Dashboard
     const sql = "SELECT * FROM assets";
     db.query(sql, (err, result) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -75,34 +66,45 @@ app.get('/api/assets', (req, res) => {
     });
 });
 
-// 5. API: บันทึกการยืม
+// ✨ 5. API: บันทึกการยืม + ส่งอีเมลแจ้งเตือน
 app.post('/api/borrow', (req, res) => {
-    const { asset_id, borrower_name, borrow_date, return_date, reason } = req.body;
+    const { asset_id, borrower_name, borrow_date, return_date, reason, user_email } = req.body;
+    
     const sqlInsert = "INSERT INTO borrow_logs (asset_id, borrower_name, borrow_date, return_date, reason) VALUES (?, ?, ?, ?, ?)";
     db.query(sqlInsert, [asset_id, borrower_name, borrow_date, return_date, reason], (err) => {
-        if (err) return res.status(500).json({ error: err.message });
-        db.query("UPDATE assets SET status = 'borrowing' WHERE id = ?", [asset_id], () => {
-            res.json({ success: true });
+        if (err) return res.status(500).json({ success: false, error: err.message });
+
+        db.query("UPDATE assets SET status = 'borrowing' WHERE id = ?", [asset_id], (err) => {
+            if (err) return res.status(500).json({ success: false, error: err.message });
+
+            db.query("SELECT name, asset_code FROM assets WHERE id = ?", [asset_id], (err, assetResult) => {
+                if (!err && assetResult.length > 0 && user_email) {
+                    const asset = assetResult[0];
+                    const mailOptions = {
+                        from: '"Asset Flow System" <rattapong980@gmail.com>', // 📧 เมลผู้ส่งต้องตรงกับ auth.user
+                        to: user_email,
+                        subject: `📢 ยืนยันการยืมอุปกรณ์: ${asset.name}`,
+                        text: `สวัสดีคุณ ${borrower_name}\nคุณได้ยืม ${asset.name} [${asset.asset_code}]\nกำหนดคืน: ${return_date}`
+                    };
+
+                    transporter.sendMail(mailOptions, (mailErr, info) => {
+                        if (mailErr) console.error("❌ 📧 Mail Error:", mailErr.message);
+                        else console.log("✅ 📧 Email sent: " + info.response);
+                    });
+                }
+                res.json({ success: true });
+            });
         });
     });
 });
-// 6. API: ดึงประวัติการยืมของผู้ใช้ (My History)
-app.get('/api/my-history', (req, res) => {
-    const userName = req.query.user; // รับชื่อผู้ใช้จากหน้าบ้าน
 
-    // SQL Join เพื่อดึงข้อมูลชื่ออุปกรณ์มาโชว์ด้วย
-    const sql = `
-        SELECT b.id, a.asset_code, a.name as asset_name, b.borrow_date, b.return_date, b.reason 
-        FROM borrow_logs b
-        JOIN assets a ON b.asset_id = a.id
-        WHERE b.borrower_name = ?
-        ORDER BY b.id DESC`;
-
-    db.query(sql, [userName], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
+// API: คืนอุปกรณ์
+app.post('/api/return', (req, res) => {
+    const { asset_id } = req.body;
+    db.query("UPDATE assets SET status = 'active' WHERE id = ?", [asset_id], (err) => {
+        if (err) return res.status(500).json({ success: false });
+        res.json({ success: true });
     });
 });
-app.listen(3000, () => {
-    console.log('🚀 Server is running on http://localhost:3000');
-});
+
+app.listen(3000, () => { console.log('🚀 Server is running on http://localhost:3000'); });
