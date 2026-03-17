@@ -3,15 +3,55 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>ประวัติการยืมของฉัน | Asset Flow</title>
+    <title>ประวัติการยืม | Asset Flow</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap');
 
+        :root {
+            --sidebar-color: #2c3e50;
+            --bg-light: #f4f7f6;
+            --dark-green: #0A3323;
+            --moss-green: #839958;
+        }
+
         body {
             font-family: 'Kanit', sans-serif;
-            background-color: #f4f7f6;
+            background-color: var(--bg-light);
+            margin: 0;
+        }
+
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: var(--sidebar-color);
+            position: fixed;
+            color: white;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 25px;
+            text-align: center;
+            background: var(--dark-green);
+            font-weight: 600;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            border-left: 5px solid transparent;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left: 5px solid var(--moss-green);
         }
 
         .main-content {
@@ -19,106 +59,77 @@
             padding: 30px;
         }
 
-        /* ดึงสไตล์ Sidebar จาก Dashboard มาใช้เพื่อให้เหมือนกัน */
-        .sidebar {
-            width: 260px;
-            height: 100vh;
-            background: #2c3e50;
-            position: fixed;
-            color: white;
-        }
+        @media print {
 
-        .nav-link {
-            color: rgba(255, 255, 255, 0.7);
-            padding: 15px 25px;
-            text-decoration: none;
-            display: block;
-        }
+            .sidebar,
+            .btn,
+            .no-print {
+                display: none !important;
+            }
 
-        .nav-link.active {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border-left: 5px solid #839958;
+            .main-content {
+                margin-left: 0 !important;
+            }
         }
     </style>
 </head>
 
 <body>
-
-    <div class="sidebar shadow">
-        <div class="p-4 text-center" style="background: #0A3323;">
+    <div class="sidebar no-print">
+        <div class="sidebar-header">
             <h4>ASSET FLOW</h4>
         </div>
         <div class="nav flex-column mt-3">
             <a href="dashboard.html" class="nav-link"><i class="fas fa-chart-line me-3"></i> หน้ากระดานสรุป</a>
-            <a href="my-history.html" class="nav-link active"><i class="fas fa-history me-3"></i>
-                ประวัติการยืมของฉัน</a>
-            <a href="borrow.html" class="nav-link"><i class="fas fa-hand-holding-box me-3"></i> ทำรายการยืมใหม่</a>
-            <hr>
-            <a href="#" class="nav-link text-warning" onclick="logout()"><i class="fas fa-sign-out-alt me-3"></i>
-                ออกจากระบบ</a>
+            <a href="my-history.html" class="nav-link"><i class="fas fa-history me-3"></i> ประวัติการยืมของฉัน</a>
+            <a href="all-assets.html" class="nav-link"><i class="fas fa-list-check me-3"></i> ทรัพย์สินทั้งหมด</a>
+            <a href="repair-list.html" class="nav-link"><i class="fas fa-tools me-3"></i> รายการแจ้งซ่อม</a>
+            <hr class="mx-3 text-white-50">
+            <a href="javascript:void(0)" class="nav-link text-warning" onclick="confirmLogout()">
+                <i class="fas fa-sign-out-alt me-3"></i> ออกจากระบบ
+            </a>
         </div>
     </div>
-
     <div class="main-content">
-        <h4 class="mb-4">ประวัติการยืมทรัพย์สินของคุณ</h4>
-
-        <div class="card border-0 shadow-sm p-4">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead class="table-light">
-                        <tr>
-                            <th>รหัส</th>
-                            <th>ชื่ออุปกรณ์</th>
-                            <th>วันที่ยืม</th>
-                            <th>กำหนดคืน</th>
-                            <th>เหตุผล</th>
-                        </tr>
-                    </thead>
-                    <tbody id="historyList">
-                    </tbody>
-                </table>
-            </div>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4>ประวัติการยืมทรัพย์สินของคุณ</h4>
+            <button class="btn btn-danger no-print" onclick="window.print()">พิมพ์รายงาน PDF</button>
+        </div>
+        <div class="bg-white p-4 rounded-4 shadow-sm">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>รหัส</th>
+                        <th>ชื่ออุปกรณ์</th>
+                        <th>วันที่ยืม</th>
+                        <th>กำหนดคืน</th>
+                        <th>เหตุผล</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTableBody"></tbody>
+            </table>
         </div>
     </div>
-
     <script>
         const API_URL = 'http://localhost:3000/api';
-        const userName = sessionStorage.getItem('displayName');
-
-        if (!userName) window.location.href = 'borrow.html';
-
-        async function loadMyHistory() {
-            try {
-                const res = await fetch(`${API_URL}/my-history?user=${encodeURIComponent(userName)}`);
-                const data = await res.json();
-
-                const list = document.getElementById('historyList');
-                if (data.length === 0) {
-                    list.innerHTML = `<tr><td colspan="5" class="text-center">ไม่พบประวัติการยืม</td></tr>`;
-                    return;
-                }
-
-                list.innerHTML = data.map(item => `
-                    <tr>
-                        <td><span class="badge bg-secondary">${item.asset_code}</span></td>
-                        <td>${item.asset_name}</td>
-                        <td>${new Date(item.borrow_date).toLocaleDateString('th-TH')}</td>
-                        <td>${new Date(item.return_date).toLocaleDateString('th-TH')}</td>
-                        <td>${item.reason || '-'}</td>
-                    </tr>
-                `).join('');
-            } catch (err) {
-                console.error(err);
-            }
+        window.onload = function () {
+            const name = sessionStorage.getItem('displayName');
+            if (!name) { window.location.href = 'borrow.html'; }
+            else { fetchMyHistory(name); }
+        };
+        async function fetchMyHistory(userName) {
+            const res = await fetch(`${API_URL}/my-history?user=${encodeURIComponent(userName)}`);
+            const data = await res.json();
+            document.getElementById('historyTableBody').innerHTML = data.map(item => `
+                <tr>
+                    <td><span class="badge bg-dark">${item.asset_code}</span></td>
+                    <td>${item.asset_name}</td>
+                    <td>${new Date(item.borrow_date).toLocaleDateString('th-TH')}</td>
+                    <td>${new Date(item.return_date).toLocaleDateString('th-TH')}</td>
+                    <td>${item.reason || '-'}</td>
+                </tr>`).join('');
         }
-
-        function logout() {
-            sessionStorage.clear();
-            window.location.href = 'borrow.html';
-        }
-
-        loadMyHistory();
+        function confirmLogout() { if (confirm("ออกจากระบบ?")) { sessionStorage.clear(); window.location.href = 'borrow.html'; } }
     </script>
 </body>
 

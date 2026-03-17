@@ -88,10 +88,10 @@
             <h4><i class="fas fa-boxes-stacked me-2"></i>ASSET FLOW</h4>
         </div>
         <div class="nav flex-column mt-3">
-            <a href="dashboard.html" class="nav-link active"><i class="fas fa-chart-line me-3"></i> หน้ากระดานสรุป</a>
+            <a href="dashboard.html" class="nav-link"><i class="fas fa-chart-line me-3"></i> หน้ากระดานสรุป</a>
             <a href="my-history.html" class="nav-link"><i class="fas fa-history me-3"></i> ประวัติการยืมของฉัน</a>
-            <a href="#" class="nav-link"><i class="fas fa-list-check me-3"></i> ทรัพย์สินทั้งหมด</a>
-            <a href="#" class="nav-link"><i class="fas fa-tools me-3"></i> รายการแจ้งซ่อม</a>
+            <a href="all-assets.html" class="nav-link"><i class="fas fa-list-check me-3"></i> ทรัพย์สินทั้งหมด</a>
+            <a href="repair-list.html" class="nav-link"><i class="fas fa-tools me-3"></i> รายการแจ้งซ่อม</a>
             <hr class="mx-3 text-white-50">
             <a href="javascript:void(0)" class="nav-link text-warning" onclick="confirmLogout()">
                 <i class="fas fa-sign-out-alt me-3"></i> ออกจากระบบ
@@ -107,7 +107,8 @@
             </div>
             <div class="d-flex align-items-center">
                 <span id="userNameDisplay" class="me-3 fw-bold text-dark">กำลังโหลด...</span>
-                <img src="logo.jpg" class="rounded-circle" width="40" height="40" onerror="this.src='https://via.placeholder.com/40'">
+                <img src="logo.jpg" class="rounded-circle" width="40" height="40"
+                    onerror="this.src='https://via.placeholder.com/40'">
             </div>
         </div>
 
@@ -141,7 +142,8 @@
         <div class="card stat-card bg-white p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5 class="mb-0"><i class="fas fa-list me-2"></i> รายการครุภัณฑ์ทั้งหมด</h5>
-                <button class="btn btn-sm btn-outline-dark" onclick="fetchAssets()"><i class="fas fa-sync-alt"></i> รีเฟรช</button>
+                <button class="btn btn-sm btn-outline-dark" onclick="fetchAssets()"><i class="fas fa-sync-alt"></i>
+                    รีเฟรช</button>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
@@ -179,9 +181,11 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label small fw-bold">เหตุผลการยืม</label>
-                            <textarea id="modalReason" class="form-control" rows="3" placeholder="ระบุเหตุผล..."></textarea>
+                            <textarea id="modalReason" class="form-control" rows="3"
+                                placeholder="ระบุเหตุผล..."></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold" style="background-color: var(--dark-green); border: none;">ยืนยันการยืม</button>
+                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold"
+                            style="background-color: var(--dark-green); border: none;">ยืนยันการยืม</button>
                     </form>
                 </div>
             </div>
@@ -198,12 +202,12 @@
         window.onload = function () {
             // สร้าง Modal instance หลังจาก DOM โหลดเสร็จ เพื่อกัน Error 'backdrop'
             borrowModal = new bootstrap.Modal(document.getElementById('borrowModal'));
-            
+
             const name = sessionStorage.getItem('displayName');
             const email = sessionStorage.getItem('userEmail');
-            
-            if (!name) { 
-                window.location.href = 'borrow.html'; 
+
+            if (!name) {
+                window.location.href = 'borrow.html';
             } else {
                 currentUser = name;
                 document.getElementById('userNameDisplay').innerText = `ผู้ใช้งาน: ${name}`;
@@ -213,55 +217,69 @@
         };
 
         // ดึงข้อมูลทรัพย์สินจาก MySQL
+        // ฟังก์ชันโหลดข้อมูลเข้าตาราง (เรียกใช้ซ้ำเมื่อมีการเปลี่ยนแปลง)
         async function fetchAssets() {
             try {
-                const res = await fetch(`${API_URL}/assets`);
+                const res = await fetch('http://localhost:3000/api/assets');
                 const data = await res.json();
-                
-                // อัปเดตการ์ด Dashboard
-                document.getElementById('totalCount').innerText = data.length;
-                document.getElementById('activeCount').innerText = data.filter(a => a.status.toLowerCase() === 'active').length;
-                document.getElementById('borrowCount').innerText = data.filter(a => a.status.toLowerCase() === 'borrowing').length;
-                document.getElementById('repairCount').innerText = data.filter(a => a.status.toLowerCase() === 'repair').length;
-
                 const list = document.getElementById('assetList');
+
                 list.innerHTML = data.map(asset => {
                     const status = asset.status.toLowerCase();
                     return `
-                    <tr>
-                        <td><span class="badge bg-dark px-3">${asset.asset_code}</span></td>
-                        <td>${asset.name}</td>
-                        <td><span class="status-badge ${getBadgeColor(status)}">${status.toUpperCase()}</span></td>
-                        <td class="text-center">
-                            ${status === 'active'
-                                ? `<button class="btn btn-sm btn-success shadow-sm rounded-3 me-1" onclick="openBorrowModal('${asset.id}', '${asset.name}')">
-                                     <i class="fas fa-plus"></i> ยืม
-                                   </button>`
-                                : `<button class="btn btn-sm btn-warning shadow-sm rounded-3" onclick="returnAsset('${asset.id}')">
-                                     <i class="fas fa-undo"></i> คืน
-                                   </button>`
-                            }
-                        </td>
-                    </tr>
-                `}).join('');
-            } catch (err) { console.error("Error fetching assets:", err); }
+            <tr>
+                <td><span class="badge bg-dark">${asset.asset_code}</span></td>
+                <td>${asset.name}</td>
+                <td><span class="badge ${getBadgeColor(status)}">${status.toUpperCase()}</span></td>
+                <td class="text-center">
+                    ${status === 'active'
+                            ? `<button class="btn btn-sm btn-success" onclick="openBorrowModal('${asset.id}', '${asset.name}')">ยืม</button>`
+                            : status === 'borrowing'
+                                ? `<button class="btn btn-sm btn-warning" onclick="returnAsset('${asset.id}')">คืน</button>`
+                                : `<button class="btn btn-sm btn-secondary" disabled>กำลังซ่อม</button>`
+                        }
+                </td>
+            </tr>`;
+                }).join('');
+            } catch (err) { console.error(err); }
+        }
+
+        // ฟังก์ชันคืนของ (แก้ไขให้ Refresh หน้าจอ)
+        async function returnAsset(id) {
+            if (!confirm("ยืนยันการคืน?")) return;
+            const res = await fetch('http://localhost:3000/api/return', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ asset_id: id })
+            });
+            if (res.ok) {
+                alert("คืนสำเร็จ!");
+                fetchAssets(); // ✨ บรรทัดนี้จะทำให้สถานะ 'BORROWING' หายไปทันที
+            }
+        }
+
+        function getBadgeColor(status) {
+            if (status === 'active') return 'bg-success';
+            if (status === 'borrowing') return 'bg-info';
+            if (status === 'repair') return 'bg-danger';
+            return 'bg-secondary';
         }
 
         // ฟังก์ชันจัดการคืนของ
         async function returnAsset(id) {
-            if(confirm("ยืนยันการคืนอุปกรณ์ชิ้นนี้ใช่หรือไม่?")) {
-                try {
-                    const res = await fetch(`${API_URL}/return`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ asset_id: id })
-                    });
-                    if(res.ok) {
-                        alert("คืนอุปกรณ์สำเร็จ!");
-                        fetchAssets();
-                    }
-                } catch (err) { alert("เกิดข้อผิดพลาดในการคืน"); }
-            }
+            if (!confirm("ยืนยันการคืนอุปกรณ์?")) return;
+            try {
+                const res = await fetch('http://localhost:3000/api/return', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ asset_id: id })
+                });
+                if (res.ok) {
+                    alert("คืนอุปกรณ์สำเร็จ!");
+                    // ✨ บรรทัดนี้จะทำให้ปุ่ม "คืน" หายไป และเปลี่ยนสถานะทันที
+                    fetchAssets();
+                }
+            } catch (err) { console.error(err); }
         }
 
         // เปิด Modal ยืม
@@ -275,7 +293,7 @@
         document.getElementById('quickBorrowForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const userEmail = sessionStorage.getItem('userEmail');
-            
+
             const data = {
                 asset_id: document.getElementById('modalAssetId').value,
                 borrower_name: currentUser,
@@ -296,7 +314,7 @@
                 if (result.success) {
                     alert('ยืมอุปกรณ์สำเร็จ! กรุณาตรวจสอบอีเมลยืนยันใน Inbox');
                     borrowModal.hide();
-                    fetchAssets(); 
+                    fetchAssets();
                 } else {
                     alert('Error: ' + result.error);
                 }
