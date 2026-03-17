@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql_db
--- Generation Time: Mar 16, 2026 at 05:59 PM
+-- Generation Time: Mar 17, 2026 at 06:03 PM
 -- Server version: 9.6.0
 -- PHP Version: 8.3.30
 
@@ -43,7 +43,7 @@ CREATE TABLE `assets` (
 
 INSERT INTO `assets` (`id`, `asset_code`, `name`, `category`, `status`, `location`, `created_at`) VALUES
 (1, 'NB-001', 'Laptop Dell XPS', 'IT', 'active', NULL, '2026-03-14 14:50:25'),
-(2, 'NB-002', 'MacBook Air M2', 'IT', 'borrowing', NULL, '2026-03-14 14:50:25'),
+(2, 'NB-002', 'MacBook Air M2', 'IT', 'active', NULL, '2026-03-14 14:50:25'),
 (3, 'CAM-01', 'Canon EOS R6', 'IT', 'active', NULL, '2026-03-14 14:50:25'),
 (4, 'IT-001', 'MacBook Pro M3', 'IT', 'active', NULL, '2026-03-14 15:27:35'),
 (5, 'IT-002', 'iPad Pro 11\"', 'IT', 'active', NULL, '2026-03-14 15:27:35'),
@@ -79,7 +79,9 @@ INSERT INTO `borrow_logs` (`id`, `asset_id`, `borrower_name`, `borrow_date`, `re
 (7, 1, 'Rattapong Saiyaphang', '2026-03-16', '2026-03-21', '', '2026-03-16 17:39:30'),
 (8, 2, 'Rattapong Saiyaphang', '2026-03-16', '2026-03-18', '', '2026-03-16 17:42:36'),
 (9, 1, 'Rattapong Saiyaphang', '2026-03-16', '2026-03-20', '', '2026-03-16 17:48:03'),
-(10, 2, 'Rattapong Saiyaphang', '2026-03-16', '2026-03-21', '', '2026-03-16 17:48:11');
+(10, 2, 'Rattapong Saiyaphang', '2026-03-16', '2026-03-21', '', '2026-03-16 17:48:11'),
+(11, 1, 'Rattapong Saiyaphang', '2026-03-17', '2026-03-14', '', '2026-03-17 14:31:00'),
+(12, 1, 'Rattapong Saiyaphang', '2026-03-17', '2026-03-20', '', '2026-03-17 15:08:32');
 
 -- --------------------------------------------------------
 
@@ -94,6 +96,30 @@ CREATE TABLE `projects` (
   `user_id` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `repair_logs`
+--
+
+CREATE TABLE `repair_logs` (
+  `id` int NOT NULL,
+  `asset_id` int DEFAULT NULL,
+  `reporter_name` varchar(255) DEFAULT NULL,
+  `description` text,
+  `location` varchar(255) DEFAULT NULL,
+  `report_date` date DEFAULT NULL,
+  `repair_status` enum('pending','in-progress','fixed') DEFAULT 'pending'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `repair_logs`
+--
+
+INSERT INTO `repair_logs` (`id`, `asset_id`, `reporter_name`, `description`, `location`, `report_date`, `repair_status`) VALUES
+(1, 3, 'Rattapong Saiyaphang', 'ห', 'ห', '2026-03-17', 'pending'),
+(2, 1, 'Rattapong Saiyaphang', 'ห', 'ห', '2026-03-17', 'pending');
 
 -- --------------------------------------------------------
 
@@ -209,6 +235,12 @@ ALTER TABLE `projects`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `repair_logs`
+--
+ALTER TABLE `repair_logs`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tags`
 --
 ALTER TABLE `tags`
@@ -258,12 +290,18 @@ ALTER TABLE `assets`
 -- AUTO_INCREMENT for table `borrow_logs`
 --
 ALTER TABLE `borrow_logs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `repair_logs`
+--
+ALTER TABLE `repair_logs`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
