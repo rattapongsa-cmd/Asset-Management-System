@@ -1,140 +1,78 @@
-นี่คือไฟล์ **README.md** ที่ออกแบบมาให้ดูเป็นมืออาชีพ สวยงาม และช่วยให้คนที่มาดูโปรเจกต์ของคุณใน GitHub เข้าใจวิธีติดตั้งและทำงานต่อได้ทันทีครับ
+-----
 
-คุณสามารถก๊อปปี้ข้อความข้างล่างนี้ไปสร้างไฟล์ชื่อ `README.md` ไว้ที่โฟลเดอร์นอกสุดของโปรเจกต์ได้เลยครับ
+# 📦 Asset Flow: ระบบจัดการครุภัณฑ์ฉบับจัดเต็ม
+
+โปรเจกต์นี้สร้างมาเพื่อแก้ปัญหาการเช็คของในคลังที่วุ่นวาย ให้กลายเป็นระบบที่ **ยืม-คืน-แจ้งซ่อม** ได้ในที่เดียว พร้อมระบบดึงข้อมูลแบบ Real-time และส่งอีเมลยืนยันแบบเท่ๆ ครับ
 
 -----
 
-````markdown
-# 📦 Asset Flow - Asset Management System
+## 🔥 ฟีเจอร์เด่น (Main Features)
 
-ระบบจัดการครุภัณฑ์และทรัพย์สิน (Asset Management System) แบบ Full-stack ที่ช่วยให้การ **ยืม-คืน**, **แจ้งซ่อม**, และ **ติดตามสถานะอุปกรณ์** เป็นเรื่องง่าย พร้อมระบบส่งอีเมลแจ้งเตือนอัตโนมัติ
+  * **หน้าเดียวจบ (Dashboard):** ดูสถานะของทั้งหมดได้ทันทีว่าอันไหนว่าง อันไหนโดนยืม หรืออันไหนพังอยู่
+  * **ยืม-คืนลื่นปรื๊ด:** กดปุ่มยืมปุ๊บ สถานะเปลี่ยนปั๊บ พร้อมส่งเมลเข้า Inbox ผู้ใช้งานทันที
+  * **ระบบแจ้งซ่อม:** ของพังเหรอ? กรอกรายละเอียดพร้อมระบุสถานที่ตั้ง แล้วกดส่งเรื่องไว้ได้เลย
+  * **ประวัติส่วนตัว:** เช็คได้ว่าตัวเองเคยยืมอะไรไปบ้าง พร้อมปุ่ม Print PDF เอาไว้ส่งงานอาจารย์/หัวหน้า
+  * **ดีไซน์สะอาดตา:** ใช้ Bootstrap 5 ทำมาให้รองรับหน้าจอคอมพิวเตอร์และแท็บเล็ตครับ
 
----
+-----
 
-## ✨ คุณสมบัติหลัก (Features)
-* 🔐 **ระบบ Login:** เข้าสู่ระบบเพื่อแยกผู้ใช้งาน
-* 📊 **Dashboard:** แสดงสถานะภาพรวมของครุภัณฑ์ทั้งหมด (พร้อมใช้งาน, กำลังถูกยืม, ชำรุด)
-* 📝 **ระบบยืม-คืน:** ทำรายการยืมพร้อมระบุเหตุผล และกดคืนได้ทันที
-* 📧 **Email Notification:** ส่งอีเมลยืนยันการยืมไปยังผู้ใช้โดยอัตโนมัติ (Nodemailer)
-* 🛠️ **ระบบแจ้งซ่อม:** บันทึกอาการเสียและสถานที่ของอุปกรณ์ที่ชำรุด
-* 📜 **ประวัติการยืม:** ดูรายการย้อนหลังของตนเองและพิมพ์รายงานเป็น PDF ได้
-* 📱 **Responsive Design:** ใช้งานได้ทั้งบนคอมพิวเตอร์และแท็บเล็ต (Bootstrap 5)
+## 🛠️ อาวุธที่ใช้ (Tech Stack)
 
----
+  * **หน้าบ้าน (Frontend):** HTML5, JavaScript (Vanilla), Bootstrap 5
+  * **หลังบ้าน (Backend):** Node.js + Express
+  * **ฐานข้อมูล (DB):** MySQL
+  * **ตัวช่วยส่งเมล:** Nodemailer
 
-## 🛠️ เทคโนโลยีที่ใช้ (Tech Stack)
+-----
 
-**Frontend:**
-* HTML5, CSS3 (Custom Styles + Google Fonts)
-* JavaScript (Vanilla JS + Fetch API)
-* [Bootstrap 5](https://getbootstrap.com/) - UI Framework
-* [Font Awesome](https://fontawesome.com/) - Icons
+## 🚀 วิธีการติดตั้ง (Installation)
 
-**Backend:**
-* [Node.js](https://nodejs.org/) & [Express](https://expressjs.com/) - Web Server
-* [MySQL](https://www.mysql.com/) - Database Management
-* [Nodemailer](https://nodemailer.com/) - Email Service
+ใครจะเอาไปต่อยอด ทำตาม 4 ขั้นตอนนี้รอดแน่นอน:
 
----
+### 1\. เตรียมเครื่อง
 
-## 🚀 การติดตั้งและเริ่มใช้งาน (Setup Instructions)
+ติดตั้ง **Node.js** และ **MySQL** (แนะนำ XAMPP หรือ Laragon) ให้เรียบร้อยก่อนนะครับ
 
-### 1. สภาพแวดล้อมที่ต้องมี (Prerequisites)
-* ติดตั้ง [Node.js](https://nodejs.org/) (แนะนำเวอร์ชัน LTS)
-* ติดตั้ง MySQL Server (แนะนำผ่าน XAMPP หรือ MySQL Installer)
+### 2\. ลง Dependencies
 
-### 2. การเตรียมฐานข้อมูล
-1. เข้าไปที่ **phpMyAdmin** หรือ MySQL Tool ของคุณ
-2. สร้างฐานข้อมูลชื่อ `webdb`
-3. รันคำสั่ง SQL จากไฟล์ `database.sql` (หรือสร้างตารางตามโครงสร้างที่ระบุไว้)
+เปิด Terminal ในโฟลเดอร์ `server` แล้วพิมพ์:
 
-### 3. การติดตั้ง Backend
 ```bash
-cd server
 npm install
-````
+```
 
-### 4\. การตั้งค่าการเชื่อมต่อ (Configuration)
+### 3\. Setup Database
 
-เปิดไฟล์ `server/index.js` และแก้ไขข้อมูลให้ตรงกับเครื่องของคุณ:
+สร้าง DB ชื่อ `webdb` ใน MySQL แล้วรัน Schema ตามนี้ (หรือ Import ไฟล์ SQL ถ้าผมแนบไว้ให้):
 
-  * **MySQL:** แก้ไข `user`, `password`, และ `port` (เช่น 3306 หรือ 8820)
-  * **Email:** แก้ไข `user` และ `pass` (App Password 16 หลักจาก Gmail)
+  * ตาราง `assets`: เก็บข้อมูลของ
+  * ตาราง `borrow_logs`: เก็บประวัติการยืม
+  * ตาราง `repair_logs`: เก็บข้อมูลแจ้งซ่อม
 
-### 5\. เริ่มรันระบบ
+### 4\. Config & Run
+
+เข้าไปแก้ไฟล์ `server/index.js` ตรงส่วน **db.createConnection** ให้ตรงกับ User/Pass เครื่องตัวเอง แล้วรันด้วยคำสั่ง:
 
 ```bash
-# ในโฟลเดอร์ server
 node index.js
 ```
 
-จากนั้นเปิดไฟล์ `login.html` ผ่าน Browser หรือใช้ VS Code Live Server เพื่อเข้าสู่ระบบ
+-----
+
+## 📂 โครงสร้างไฟล์
+
+  * `/frontend`: รวมหน้าเว็บ HTML ทั้งหมด
+  * `/server`: โค้ด Backend API และ logic การส่งเมล
 
 -----
 
-## 📂 โครงสร้างโฟลเดอร์ (Project Structure)
-
-```text
-├── frontend/             # ไฟล์หน้าเว็บทั้งหมด (.html, .css)
-│   ├── login.html        # หน้าเข้าสู่ระบบ
-│   ├── dashboard.html    # หน้าหลัก/ยืม-คืน
-│   ├── my-history.html   # หน้าประวัติส่วนตัว
-│   └── repair-list.html  # หน้าแจ้งซ่อม
-└── server/               # ส่วนของ API Backend
-    ├── index.js          # ไฟล์หลักของ Node.js Server
-    └── package.json      # รายการ Dependencies
-```
+**พัฒนาโดย:** [Rattapong Saiyaphang](https://www.google.com/search?q=https://github.com/rattapongsa-cmd) 💻
+*ถ้ามี Bug หรืออยากเพิ่มฟีเจอร์ ทักมาคุยกันได้ครับ\!*
 
 -----
 
-## 📄 โครงสร้างตาราง SQL (Schema)
+### 💡 ทริคส่วนตัว:
 
-เพื่อให้คนอื่นนำไปรันต่อได้ง่าย ควรเตรียม Schema ดังนี้:
+ถ้าจะส่งโปรเจกต์ให้เพื่อนดู อย่าลืมแก้ **App Password** ของ Gmail ในโค้ดก่อนนะ เดี๋ยวเพื่อนเอาไปส่งเมลเล่น ฮ่าๆ
 
-```sql
--- ตารางทรัพย์สิน
-CREATE TABLE assets (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    asset_code VARCHAR(50),
-    name VARCHAR(255),
-    status ENUM('active', 'borrowing', 'repair') DEFAULT 'active'
-);
-
--- ตารางประวัติการยืม
-CREATE TABLE borrow_logs (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    asset_id INT,
-    borrower_name VARCHAR(255),
-    borrow_date DATE,
-    return_date DATE,
-    reason TEXT
-);
-
--- ตารางแจ้งซ่อม
-CREATE TABLE repair_logs (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    asset_id INT,
-    reporter_name VARCHAR(255),
-    description TEXT,
-    location VARCHAR(255),
-    report_date DATE,
-    repair_status VARCHAR(50) DEFAULT 'pending'
-);
-```
-
------
-
-## 👤 ผู้พัฒนา (Developer)
-
-  * **Name:** Rattapong Saiyaphang
-  * **GitHub:** [@rattapongsa-cmd](https://www.google.com/search?q=https://github.com/rattapongsa-cmd)
-
-<!-- end list -->
-
-```
-
-### 💡 คำแนะนำเพิ่มเติม:
-ถ้าคุณมีไฟล์ SQL ที่ Export มาจาก phpMyAdmin ผมแนะนำให้อัปโหลดไฟล์นั้นขึ้นไปใน GitHub ด้วย (ตั้งชื่อว่า `database.sql`) เพื่อให้เพื่อนที่จะมาต่อโปรเจกต์สามารถ Import ได้ในคลิกเดียวครับ!
-
-มีส่วนไหนที่อยากให้ผมปรับแต่งให้เข้ากับโปรเจกต์คุณเป็นพิเศษไหมครับ?
-```
+อยากให้ผมช่วยเขียน **"คู่มือการใช้งาน" (User Manual)** แบบสั้นๆ เพิ่มเข้าไปใน README ด้วยไหมครับ? จะได้ดูโปรขึ้นไปอีก\!
