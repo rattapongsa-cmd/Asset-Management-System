@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql_db
--- Generation Time: Mar 17, 2026 at 06:03 PM
+-- Generation Time: Mar 19, 2026 at 08:56 PM
 -- Server version: 9.6.0
 -- PHP Version: 8.3.30
 
@@ -42,12 +42,21 @@ CREATE TABLE `assets` (
 --
 
 INSERT INTO `assets` (`id`, `asset_code`, `name`, `category`, `status`, `location`, `created_at`) VALUES
-(1, 'NB-001', 'Laptop Dell XPS', 'IT', 'active', NULL, '2026-03-14 14:50:25'),
-(2, 'NB-002', 'MacBook Air M2', 'IT', 'active', NULL, '2026-03-14 14:50:25'),
-(3, 'CAM-01', 'Canon EOS R6', 'IT', 'active', NULL, '2026-03-14 14:50:25'),
-(4, 'IT-001', 'MacBook Pro M3', 'IT', 'active', NULL, '2026-03-14 15:27:35'),
-(5, 'IT-002', 'iPad Pro 11\"', 'IT', 'active', NULL, '2026-03-14 15:27:35'),
-(15, 'IT-003', 'Monitor Dell 27\"', 'IT', 'active', NULL, '2026-03-14 15:42:51');
+(38, 'NB-005', 'MacBook Air M3 (13-inch, 16GB RAM)', 'IT', 'borrowing', NULL, '2026-03-19 19:31:20'),
+(39, 'NB-006', 'ASUS ROG Zephyrus G14 (Gaming Laptop)', 'IT', 'borrowing', NULL, '2026-03-19 19:31:20'),
+(40, 'NB-007', 'Lenovo ThinkPad X1 Carbon Gen 11', 'IT', 'borrowing', NULL, '2026-03-19 19:31:20'),
+(41, 'NB-008', 'Dell Latitude 5440 Business Laptop', 'IT', 'active', NULL, '2026-03-19 19:31:20'),
+(42, 'PRN-002', 'HP LaserJet Pro M404dn', 'IT', 'repair', NULL, '2026-03-19 19:31:20'),
+(43, 'PRN-003', 'Epson EcoTank L3250 (Ink Tank Printer)', 'IT', 'active', NULL, '2026-03-19 19:31:20'),
+(44, 'PRN-004', 'Canon PIXMA G3010 (Wireless All-In-One)', 'IT', 'repair', NULL, '2026-03-19 19:31:20'),
+(45, 'CHR-002', 'เก้าอี้สำนักงานไร้ล้อ (Meeting Chair Steelcase)', 'IT', 'active', NULL, '2026-03-19 19:31:20'),
+(46, 'CHR-003', 'เก้าอี้เกมมิ่ง Secretlab TITAN Evo', 'IT', 'active', NULL, '2026-03-19 19:31:20'),
+(47, 'CHR-004', 'ชุดโต๊ะประชุมไม้สัก (Meeting Table Set)', 'IT', 'active', NULL, '2026-03-19 19:31:20'),
+(48, 'CHR-005', 'เก้าอี้ทำงานเพื่อสุขภาพ Furradec', 'IT', 'active', NULL, '2026-03-19 19:31:20'),
+(49, 'CAM-003', 'Fujifilm X-T5 (Silver Body)', 'IT', 'active', NULL, '2026-03-19 19:31:20'),
+(50, 'CAM-004', 'GoPro HERO 12 Black (Action Cam)', 'IT', 'active', NULL, '2026-03-19 19:31:20'),
+(51, 'CAM-005', 'DJI Osmo Pocket 3 (Vlog Camera)', 'IT', 'active', NULL, '2026-03-19 19:31:20'),
+(52, 'CAM-006', 'Panasonic Lumix GH6 (Video Focused)', 'IT', 'active', NULL, '2026-03-19 19:31:20');
 
 -- --------------------------------------------------------
 
@@ -70,18 +79,9 @@ CREATE TABLE `borrow_logs` (
 --
 
 INSERT INTO `borrow_logs` (`id`, `asset_id`, `borrower_name`, `borrow_date`, `return_date`, `reason`, `created_at`) VALUES
-(1, 1, 'Admin', '2026-03-16', '2026-03-21', '', '2026-03-16 17:04:23'),
-(2, 1, 'Admin', '2026-03-16', '2026-03-21', '', '2026-03-16 17:04:52'),
-(3, 2, 'Admin', '2026-03-16', '2026-03-21', '', '2026-03-16 17:05:26'),
-(4, 3, 'Admin', '2026-03-16', '2026-03-20', '', '2026-03-16 17:12:31'),
-(5, 4, 'Admin', '2026-03-16', '2026-03-28', '', '2026-03-16 17:12:53'),
-(6, 1, 'Rattapong Saiyaphang', '2026-03-16', '2026-03-20', '', '2026-03-16 17:38:53'),
-(7, 1, 'Rattapong Saiyaphang', '2026-03-16', '2026-03-21', '', '2026-03-16 17:39:30'),
-(8, 2, 'Rattapong Saiyaphang', '2026-03-16', '2026-03-18', '', '2026-03-16 17:42:36'),
-(9, 1, 'Rattapong Saiyaphang', '2026-03-16', '2026-03-20', '', '2026-03-16 17:48:03'),
-(10, 2, 'Rattapong Saiyaphang', '2026-03-16', '2026-03-21', '', '2026-03-16 17:48:11'),
-(11, 1, 'Rattapong Saiyaphang', '2026-03-17', '2026-03-14', '', '2026-03-17 14:31:00'),
-(12, 1, 'Rattapong Saiyaphang', '2026-03-17', '2026-03-20', '', '2026-03-17 15:08:32');
+(14, 38, 'Rattapong Saiyaphang', '2026-03-19', '2026-03-21', '', '2026-03-19 19:32:13'),
+(15, 39, 'Rattapong Saiyaphang', '2026-03-19', '2026-03-20', '', '2026-03-19 19:32:16'),
+(16, 40, 'Rattapong Saiyaphang', '2026-03-19', '2026-03-28', '', '2026-03-19 19:32:20');
 
 -- --------------------------------------------------------
 
@@ -110,7 +110,7 @@ CREATE TABLE `repair_logs` (
   `description` text,
   `location` varchar(255) DEFAULT NULL,
   `report_date` date DEFAULT NULL,
-  `repair_status` enum('pending','in-progress','fixed') DEFAULT 'pending'
+  `repair_status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -118,8 +118,14 @@ CREATE TABLE `repair_logs` (
 --
 
 INSERT INTO `repair_logs` (`id`, `asset_id`, `reporter_name`, `description`, `location`, `report_date`, `repair_status`) VALUES
-(1, 3, 'Rattapong Saiyaphang', 'ห', 'ห', '2026-03-17', 'pending'),
-(2, 1, 'Rattapong Saiyaphang', 'ห', 'ห', '2026-03-17', 'pending');
+(1, 3, 'Rattapong Saiyaphang', 'ห', 'ห', '2026-03-17', 'done'),
+(2, 1, 'Rattapong Saiyaphang', 'ห', 'ห', '2026-03-17', 'done'),
+(3, 1, 'Rattapong Saiyaphang', 'd', 'd', '2026-03-19', 'done'),
+(4, 43, 'Rattapong Saiyaphang', 'ห', 'ห', '2026-03-19', 'done'),
+(5, 42, 'Rattapong Saiyaphang', 'ห', 'ห', '2026-03-19', 'done'),
+(6, 45, 'Rattapong Saiyaphang', 'ห', 'ห', '2026-03-19', 'done'),
+(7, 42, 'Rattapong Saiyaphang', 'ห', 'ห', '2026-03-19', 'pending'),
+(8, 44, 'Rattapong Saiyaphang', 'ห', 'ห', '2026-03-19', 'pending');
 
 -- --------------------------------------------------------
 
@@ -205,9 +211,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `email`, `firstname`, `lastname`, `display_name`, `password`) VALUES
 (3, 'test@email.com', '', '', 'Admin', '123456'),
-(4, '', '', '', '', ''),
 (5, 'rattapong980@gmail.com', 'Rattapong', 'Saiyaphang', 'Rattapong Saiyaphang', '11'),
-(6, 'nachaphat16149@gmail.com', 'nachaphat', 'hasatangsaikaew', 'nachaphat hasatangsaikaew', '12345678');
+(6, 'nachaphat16149@gmail.com', 'nachaphat', 'hasatangsaikaew', 'nachaphat hasatangsaikaew', '12345678'),
+(7, 'Rxa@gmail.com', 'S', 'AA', 'S AA', '11');
 
 --
 -- Indexes for dumped tables
@@ -284,13 +290,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `assets`
 --
 ALTER TABLE `assets`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `borrow_logs`
 --
 ALTER TABLE `borrow_logs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `projects`
@@ -302,7 +308,7 @@ ALTER TABLE `projects`
 -- AUTO_INCREMENT for table `repair_logs`
 --
 ALTER TABLE `repair_logs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tags`
@@ -326,7 +332,7 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
