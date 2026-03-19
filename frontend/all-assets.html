@@ -1,170 +1,260 @@
 <!DOCTYPE html>
 <html lang="th">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ทรัพย์สินทั้งหมด | Asset Flow</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap');
+        :root { --sidebar-color: #2c3e50; --bg-light: #f4f7f6; --dark-green: #0A3323; --moss-green: #839958; }
+        body { font-family: 'Kanit', sans-serif; background-color: var(--bg-light); margin: 0; }
+        
+        .sidebar { width: 260px; height: 100vh; background: var(--sidebar-color); position: fixed; color: white; z-index: 100; }
+        .sidebar-header { padding: 25px; text-align: center; background: var(--dark-green); font-weight: 600; }
+        .nav-link { color: rgba(255, 255, 255, 0.7); padding: 15px 25px; display: flex; align-items: center; text-decoration: none; border-left: 5px solid transparent; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { background: rgba(255, 255, 255, 0.1); color: white; border-left: 5px solid var(--moss-green); }
+        
+        .main-content { margin-left: 260px; padding: 30px; }
+        .card-custom { border: none; border-radius: 15px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); padding: 25px; background: white; margin-bottom: 20px; }
 
-        body {
-            font-family: 'Kanit', sans-serif;
-            background-color: #f4f7f6;
-            margin: 0;
+        .category-pill {
+            cursor: pointer; padding: 10px 20px; border-radius: 50px; background: #fff; color: #555;
+            margin-right: 8px; transition: 0.3s; display: inline-block; margin-bottom: 10px;
+            border: 1px solid #ddd; font-weight: 500;
         }
-
-        .sidebar {
-            width: 260px;
-            height: 100vh;
-            background: #2c3e50;
-            position: fixed;
-            color: white;
-            z-index: 100;
-        }
-
-        .sidebar-header {
-            padding: 25px;
-            text-align: center;
-            background: #0A3323;
-            font-weight: 600;
-        }
-
-        .nav-link {
-            color: rgba(255, 255, 255, 0.7);
-            padding: 15px 25px;
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            transition: 0.3s;
-            border-left: 5px solid transparent;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border-left: 5px solid #839958;
-        }
-
-        .main-content {
-            margin-left: 260px;
-            padding: 30px;
-        }
-
-        .card-custom {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            background: white;
-            padding: 25px;
-        }
-
-        .status-badge {
-            border-radius: 20px;
-            padding: 4px 12px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
+        .category-pill:hover { background: #f8f9fa; }
+        .category-pill.active { background: var(--dark-green); color: white; border-color: var(--dark-green); }
     </style>
 </head>
-
 <body>
 
     <div class="sidebar shadow">
-        <div class="sidebar-header">
-            <h4><i class="fas fa-boxes-stacked me-2"></i>ASSET FLOW</h4>
-        </div>
+        <div class="sidebar-header"><h4><i class="fas fa-boxes-stacked me-2"></i>ASSET FLOW</h4></div>
         <div class="nav flex-column mt-3">
-            <a href="dashboard.html" class="nav-link"><i class="fas fa-chart-line me-3"></i> หน้ากระดานสรุป</a>
-            <a href="my-history.html" class="nav-link"><i class="fas fa-history me-3"></i> ประวัติการยืมของฉัน</a>
-            <a href="all-assets.html" class="nav-link"><i class="fas fa-list-check me-3"></i> ทรัพย์สินทั้งหมด</a>
+            <a href="dashboard.html" class="nav-link"><i class="fas fa-chart-line me-3"></i> หน้าหลัก</a>
+            <a href="my-history.html" class="nav-link"><i class="fas fa-history me-3"></i> ประวัติการยืม</a>
+            <a href="all-assets.html" class="nav-link active"><i class="fas fa-list-check me-3"></i> ทรัพย์สินทั้งหมด</a>
             <a href="repair-list.html" class="nav-link"><i class="fas fa-tools me-3"></i> รายการแจ้งซ่อม</a>
+            <a href="report.html" class="nav-link"><i class="fas fa-file-invoice me-3"></i> ออกรายงานประจำปี</a>
             <hr class="mx-3 text-white-50">
-            <a href="javascript:void(0)" class="nav-link text-warning" onclick="confirmLogout()">
+            <a href="javascript:void(0)" class="nav-link text-warning" data-bs-toggle="modal" data-bs-target="#logoutModal">
                 <i class="fas fa-sign-out-alt me-3"></i> ออกจากระบบ
             </a>
         </div>
     </div>
 
     <div class="main-content">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4><i class="fas fa-list-check me-2"></i> ทรัพย์สินทั้งหมดในระบบ</h4>
-            <div class="d-flex align-items-center">
-                <span id="userNameDisplay" class="me-3 fw-bold text-dark"></span>
-                <button class="btn btn-outline-dark btn-sm" onclick="fetchAssets()"><i class="fas fa-sync-alt"></i>
-                    รีเฟรช</button>
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <div>
+                <h4 class="mb-0 text-dark fw-bold">จัดการทรัพย์สินตามหมวดหมู่</h4>
+                <p class="text-muted small mb-0">เรียกดูและทำรายการยืม-คืนทรัพย์สิน</p>
+            </div>
+            
+            <div class="d-flex align-items-center bg-white px-3 py-1 rounded-pill shadow-sm border" style="height: 50px;">
+                <div class="text-end me-3">
+                    <div class="fw-bold mb-0" id="userNameDisplay" style="font-size: 0.85rem; color: #2c3e50; line-height: 1.2;">กำลังโหลด...</div>
+                    <small class="text-muted" style="font-size: 0.7rem;">แผนก IT Support</small>
+                </div>
+                <div style="width: 38px; height: 38px; border-radius: 50%; padding: 2px; background: var(--moss-green);">
+                    <img src="logo.jpg" class="rounded-circle w-100 h-100" style="object-fit: cover; background-color: white;" onerror="this.src='https://via.placeholder.com/40'">
+                </div>
             </div>
         </div>
 
         <div class="card-custom">
+            <div class="mb-4">
+                <label class="form-label small fw-bold text-muted mb-3 text-uppercase">เลือกหมวดหมู่:</label><br>
+                <button class="category-pill active" onclick="setCategory('all', this)">📌 ทั้งหมด</button>
+                <button class="category-pill" onclick="setCategory('NB', this)"><i class="fas fa-laptop"></i> โน้ตบุ๊ค/คอม</button>
+                <button class="category-pill" onclick="setCategory('PRN', this)"><i class="fas fa-print"></i> เครื่องปริ้น</button>
+                <button class="category-pill" onclick="setCategory('CHR', this)"><i class="fas fa-chair"></i> เก้าอี้</button>
+                <button class="category-pill" onclick="setCategory('CAM', this)"><i class="fas fa-camera"></i> กล้อง</button>
+                <button class="category-pill" onclick="setCategory('IT', this)"><i class="fas fa-microchip"></i> อุปกรณ์ IT</button>
+            </div>
+            
+            <div class="input-group search-box shadow-sm" style="border-radius: 12px; overflow: hidden;">
+                <span class="input-group-text bg-white border-0"><i class="fas fa-search text-muted"></i></span>
+                <input type="text" id="searchInput" class="form-control border-0" placeholder="ค้นหาด้วยรหัส (เช่น NB-001) หรือ ชื่อทรัพย์สิน..." onkeyup="filterAssets()">
+            </div>
+        </div>
+
+        <div class="card card-custom">
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th>รหัสทรัพย์สิน</th>
-                            <th>ชื่อรายการ</th>
-                            <th>สถานะ</th>
-                            <th class="text-center">การจัดการ</th>
-                        </tr>
+                    <thead class="table-light text-uppercase" style="font-size: 0.85rem;">
+                        <tr><th style="width: 15%">รหัสทรัพย์สิน</th><th style="width: 45%">ชื่อรายการ</th><th style="width: 20%">สถานะ</th><th style="width: 20%" class="text-center">จัดการ</th></tr>
                     </thead>
                     <tbody id="assetTableBody">
+                        <tr><td colspan="4" class="text-center py-5 text-muted"><i class="fas fa-spinner fa-spin me-2"></i> กำลังเรียกข้อมูลจากคลัง...</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
+    <div class="modal fade" id="borrowModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg" style="border-radius: 20px; border: none;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">📦 ทำรายการยืม</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="quickBorrowForm">
+                        <input type="hidden" id="modalAssetId">
+                        <div class="mb-3"><label class="form-label small fw-bold">อุปกรณ์ที่เลือก</label><input type="text" id="modalAssetName" class="form-control bg-light border-0 fw-bold" readonly></div>
+                        <div class="mb-3"><label class="form-label small fw-bold">กำหนดวันคืน</label><input type="date" id="modalReturnDate" class="form-control" required></div>
+                        <div class="mb-4"><label class="form-label small fw-bold">เหตุผลการยืม</label><textarea id="modalReason" class="form-control" rows="3" placeholder="ระบุเหตุผลการใช้งาน..."></textarea></div>
+                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold" style="background-color: var(--dark-green); border: none; border-radius: 10px;">ยืนยันการยืม</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="logoutModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg" style="border-radius: 20px; border: none; padding: 15px;">
+                <div class="modal-body text-center">
+                    <div class="mb-4 mt-3"><div style="width: 80px; height: 80px; background-color: #ffe6e6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;"><i class="fas fa-sign-out-alt text-danger" style="font-size: 2.5rem;"></i></div></div>
+                    <h4 class="mb-2 fw-bold">ยืนยันการออกจากระบบ?</h4><p class="text-muted mb-4">คุณแน่ใจหรือไม่ว่าต้องการออกจากระบบ Asset Flow?</p>
+                    <div class="d-flex justify-content-center gap-3 mb-2">
+                        <button type="button" class="btn btn-light px-4 py-2" data-bs-dismiss="modal" style="border-radius: 12px; font-weight: 500; border: 1px solid #ddd;">ยกเลิก</button>
+                        <button type="button" class="btn btn-danger px-4 py-2" id="confirmLogoutBtn" style="border-radius: 12px; font-weight: 500;">ออกจากระบบ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const API_URL = 'http://localhost:3000/api';
+        let allAssets = [];
+        let currentCategory = 'all';
+        let borrowModal;
 
-        window.onload = function () {
+        window.onload = async () => {
             const name = sessionStorage.getItem('displayName');
-            if (!name) {
-                window.location.href = 'borrow.html';
-            } else {
-                document.getElementById('userNameDisplay').innerText = `ผู้ใช้งาน: ${name}`;
-                fetchAssets();
+            // ✨ เปลี่ยนการเช็คหน้าล็อกอินเป็น borrow.html ✨
+            if (!name) window.location.href = 'borrow.html';
+            else {
+                document.getElementById('userNameDisplay').innerText = name;
+                borrowModal = new bootstrap.Modal(document.getElementById('borrowModal'));
+                await fetchAssets();
             }
         };
 
         async function fetchAssets() {
             try {
                 const res = await fetch(`${API_URL}/assets`);
-                const data = await res.json();
-                const tbody = document.getElementById('assetTableBody');
+                allAssets = await res.json();
+                filterAssets(); 
+            } catch (err) {
+                Swal.fire('ข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อฐานข้อมูลได้', 'error');
+                document.getElementById('assetTableBody').innerHTML = '<tr><td colspan="4" class="text-center text-danger">ไม่สามารถเชื่อมต่อ Server ได้</td></tr>';
+            }
+        }
 
-                tbody.innerHTML = data.map(asset => `
-                    <tr>
-                        <td><span class="badge bg-dark px-3">${asset.asset_code}</span></td>
-                        <td>${asset.name}</td>
-                        <td><span class="status-badge ${getBadgeColor(asset.status)}">${asset.status.toUpperCase()}</span></td>
-                        <td class="text-center">
-                            ${asset.status === 'active'
-                        ? '<span class="text-success"><i class="fas fa-check-circle"></i> พร้อมให้ยืม</span>'
-                        : '<span class="text-muted"><i class="fas fa-minus-circle"></i> ไม่ว่าง</span>'}
-                        </td>
-                    </tr>
-                `).join('');
-            } catch (err) { console.error(err); }
+        function setCategory(cat, btn) {
+            currentCategory = cat;
+            document.querySelectorAll('.category-pill').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+            filterAssets();
+        }
+
+        function filterAssets() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const tbody = document.getElementById('assetTableBody');
+
+            const filtered = allAssets.filter(asset => {
+                const matchCat = currentCategory === 'all' || asset.asset_code.startsWith(currentCategory);
+                const matchSearch = asset.name.toLowerCase().includes(search) || asset.asset_code.toLowerCase().includes(search);
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center py-5 text-muted">ไม่พบข้อมูลในหมวดหมู่นี้</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(asset => {
+                const status = asset.status.toLowerCase();
+                return `
+                <tr>
+                    <td><span class="badge bg-dark">${asset.asset_code}</span></td>
+                    <td class="fw-bold">${asset.name}</td>
+                    <td><span class="badge ${getBadgeColor(status)}">${status.toUpperCase()}</span></td>
+                    <td class="text-center">
+                        ${status === 'active' 
+                            ? `<button class="btn btn-sm btn-success px-4" onclick="openBorrowModal('${asset.id}', '${asset.name}')">ยืม</button>` 
+                            : status === 'borrowing'
+                                ? `<button class="btn btn-sm btn-warning px-4" onclick="returnAsset('${asset.id}')">คืน</button>`
+                                : `<button class="btn btn-sm btn-secondary px-3" disabled>กำลังซ่อม</button>`
+                        }
+                    </td>
+                </tr>`;
+            }).join('');
         }
 
         function getBadgeColor(status) {
-            const s = status.toLowerCase();
-            if (s === 'active') return 'bg-success-subtle text-success';
-            if (s === 'borrowing') return 'bg-info-subtle text-info';
-            return 'bg-danger-subtle text-danger';
+            if (status === 'active') return 'bg-success-subtle text-success';
+            if (status === 'borrowing') return 'bg-info-subtle text-info';
+            if (status === 'repair') return 'bg-danger-subtle text-danger';
+            return 'bg-secondary-subtle text-secondary';
         }
 
-        function confirmLogout() {
-            if (confirm("ต้องการออกจากระบบ?")) {
-                sessionStorage.clear();
-                window.location.href = 'borrow.html';
-            }
+        function openBorrowModal(id, name) {
+            document.getElementById('modalAssetId').value = id;
+            document.getElementById('modalAssetName').value = name;
+            borrowModal.show();
         }
+
+        document.getElementById('quickBorrowForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                asset_id: document.getElementById('modalAssetId').value,
+                borrower_name: sessionStorage.getItem('displayName'),
+                borrow_date: new Date().toISOString().split('T')[0],
+                return_date: document.getElementById('modalReturnDate').value,
+                reason: document.getElementById('modalReason').value,
+                user_email: sessionStorage.getItem('userEmail')
+            };
+
+            try {
+                const res = await fetch(`${API_URL}/borrow`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+                if (res.ok) {
+                    borrowModal.hide();
+                    Swal.fire({ title: 'ทำรายการยืมสำเร็จ!', text: 'ระบบบันทึกข้อมูลเรียบร้อยแล้ว', icon: 'success', timer: 2000, showConfirmButton: false });
+                    await fetchAssets(); 
+                }
+            } catch (err) { Swal.fire('ผิดพลาด', 'ทำรายการไม่สำเร็จ กรุณาลองใหม่อีกครั้ง', 'error'); }
+        });
+
+        async function returnAsset(id) {
+            Swal.fire({
+                title: 'ยืนยันการคืนอุปกรณ์?', text: "กรุณาตรวจสอบสภาพอุปกรณ์ก่อนทำการคืน", icon: 'warning',
+                showCancelButton: true, confirmButtonColor: '#0A3323', cancelButtonColor: '#d33', confirmButtonText: 'ใช่, คืนอุปกรณ์', cancelButtonText: 'ยกเลิก'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        const res = await fetch(`${API_URL}/return`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ asset_id: id }) });
+                        if (res.ok) {
+                            Swal.fire({ title: 'คืนอุปกรณ์สำเร็จ!', text: 'ระบบได้อัปเดตสถานะเป็น "พร้อมใช้งาน" แล้ว', icon: 'success', confirmButtonColor: '#0A3323' });
+                            fetchAssets(); 
+                        }
+                    } catch (err) { Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อ Server ได้', 'error'); }
+                }
+            });
+        }
+
+        document.getElementById('confirmLogoutBtn').addEventListener('click', function() {
+            sessionStorage.clear();
+            window.location.href = 'borrow.html';
+        });
     </script>
 </body>
-
 </html>

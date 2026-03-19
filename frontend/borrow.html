@@ -1,206 +1,164 @@
 <!DOCTYPE html>
 <html lang="th">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AssetFlow | เข้าสู่ระบบ</title>
+    <title>เข้าสู่ระบบ | ASSET FLOW</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap');
-
-        :root {
-            --dark-green: #0A3323;
-            --moss-green: #839958;
-            --beige: #F7F4D5;
-            --midnight-green: #105666;
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
+        
+        :root { --dark-green: #0A3323; --moss-green: #5c8052; --bg-light: #f4f7f6; }
+        
+        /* บังคับให้สูงเต็มจอเสมอ */
+        body { 
+            font-family: 'Kanit', sans-serif; 
+            margin: 0; 
+            height: 100vh !important; 
+            display: flex; 
+            overflow: hidden; 
         }
-
-        body {
-            font-family: 'Kanit', sans-serif;
-            margin: 0;
-            background-color: var(--beige);
-        }
-
-        .main-container {
+        
+        /* ฝั่งซ้าย: รูปภาพและข้อความ */
+        .login-left {
+            width: 50%;
+            /* ⚠️ อย่าลืมใส่ชื่อไฟล์รูปภาพตึกของคุณตรงนี้ ⚠️ */
+            background: linear-gradient(rgba(10, 51, 35, 0.85), rgba(10, 51, 35, 0.85)), url('bg.jpg') center/cover;
+            color: white;
             display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .image-side {
-            flex: 1.2;
-            background: url('bg.jpg') center/cover no-repeat;
-            position: relative;
-        }
-
-        .image-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(10, 51, 35, 0.85), rgba(16, 86, 102, 0.7));
-            display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
-            color: var(--beige);
-            padding: 40px;
-        }
-
-        .form-side {
-            flex: 1;
-            display: flex;
             align-items: center;
-            justify-content: center;
             padding: 40px;
-        }
-
-        .form-content {
-            width: 100%;
-            max-width: 420px;
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 25px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             text-align: center;
+            height: 100%;
         }
 
-        .logo-image {
-            width: 120px;
-            height: 120px;
-            object-fit: contain;
-            margin-bottom: 20px;
-            border-radius: 50%;
+        /* ฝั่งขวา: ฟอร์มล็อกอิน */
+        .login-right {
+            width: 50%;
+            background-color: var(--bg-light); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            height: 100%;
         }
 
-        h4 {
-            color: var(--dark-green);
-            font-weight: 500;
-            margin-bottom: 25px;
-        }
-
-        .label-custom {
-            color: var(--moss-green);
-            font-weight: 500;
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-            display: block;
-            text-align: left;
+        .login-card {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
         }
 
         .form-control {
             border-radius: 12px;
-            padding: 12px;
-            border: 1.5px solid #eee;
-            margin-bottom: 15px;
+            padding: 12px 15px;
+            background-color: #fcfcfc;
+            border: 1px solid #e0e0e0;
+            font-size: 0.95rem;
+        }
+        .form-control:focus {
+            border-color: var(--moss-green);
+            box-shadow: 0 0 0 0.2rem rgba(92, 128, 82, 0.2);
+            background-color: #fff;
         }
 
-        .btn-primary {
+        .btn-login {
+            background-color: var(--moss-green); 
+            color: white;
             border-radius: 12px;
-            padding: 15px;
-            font-weight: 500;
-            width: 100%;
-            background-color: var(--dark-green);
-            border: none;
-            color: var(--beige);
-            margin-top: 10px;
-            transition: 0.3s;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--midnight-green);
-            transform: translateY(-2px);
-        }
-
-        .welcome-text h1 {
-            font-size: 3.5rem;
+            padding: 12px;
             font-weight: 600;
-            margin-bottom: 15px;
-            letter-spacing: 2px;
+            font-size: 1.05rem;
+            transition: 0.3s;
+            border: none;
         }
+        .btn-login:hover { background-color: var(--dark-green); color: white; transform: translateY(-2px); }
     </style>
 </head>
-
 <body>
 
-    <div class="main-container">
-        <div class="image-side">
-            <div class="image-overlay">
-                <div class="welcome-text text-center">
-                    <h1>ASSET FLOW</h1>
-                    <h3 class="mb-3" style="font-weight: 400;">ระบบจัดการทรัพย์สินและอุปกรณ์ไอที</h3>
-                    <p style="font-weight: 300; opacity: 0.9; line-height: 1.8;">
-                        บันทึกทรัพย์สินองค์กร • ติดตามสถานะเรียลไทม์<br>
-                        จัดการการยืม-คืนอุปกรณ์ • ออกรายงานประจำปีแม่นยำ
-                    </p>
-                </div>
-            </div>
-        </div>
+    <div class="login-left d-none d-md-flex">
+        <h1 class="fw-bold mb-2" style="font-size: 3.5rem; letter-spacing: 2px;">ASSET FLOW</h1>
+        <h4 class="mb-4" style="font-weight: 400;">ระบบจัดการทรัพย์สินและอุปกรณ์ไอที</h4>
+        <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem;">
+            บันทึกทรัพย์สินองค์กร • ติดตามสถานะเรียลไทม์<br>
+            จัดการการยืม-คืนอุปกรณ์ • ออกรายงานประจำปีแม่นยำ
+        </p>
+    </div>
 
-        <div class="form-side">
-            <div class="form-content shadow">
-                <div id="loginSection">
-                    <img src="logo.jpg" alt="Logo" class="logo-image">
-                    <h4>เข้าสู่ระบบเพื่อทำรายการยืม</h4>
-                    <form id="loginForm">
-                        <span class="label-custom">Username (Email)</span>
-                        <input type="text" id="username" class="form-control" placeholder="example@email.com" required>
-                        <span class="label-custom">Password</span>
-                        <input type="password" id="password" class="form-control" placeholder="••••••••" required>
-                        <button type="submit" class="btn btn-primary">เข้าสู่ระบบ</button>
-                        <div class="mt-3 text-center" style="font-size: 0.9rem;">
-                            <span class="text-muted">ยังไม่มีบัญชี?</span>
-                            <a href="register.html" style="color: var(--midnight-green); text-decoration: none; font-weight: 500;">สมัครสมาชิก</a>
-                        </div>
-                    </form>
-                </div>
+    <div class="login-right w-100 w-md-50">
+        <div class="login-card">
+            <div style="width: 80px; height: 80px; margin: 0 auto 20px;">
+                <img src="logo.jpg" class="w-100 h-100 rounded-circle shadow-sm" style="object-fit: cover; border: 3px solid white;" onerror="this.src='https://via.placeholder.com/80'">
             </div>
+            
+            <h4 class="fw-bold text-dark mb-4">เข้าสู่ระบบเพื่อทำรายการยืม</h4>
+            
+            <form id="loginForm" class="text-start">
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-muted">Username (Email)</label>
+                    <input type="email" id="username" class="form-control" placeholder="example@email.com" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label small fw-bold text-muted">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-login w-100 mb-4">เข้าสู่ระบบ</button>
+                
+                <div class="text-center">
+                    <a href="register.html" class="text-decoration-none small" style="color: var(--dark-green); font-weight: 500;">ยังไม่มีบัญชี? สมัครสมาชิก</a>
+                </div>
+            </form>
         </div>
     </div>
 
     <script>
-        const API_URL = 'http://localhost:3000/api';
-
-        // ฟังก์ชันจัดการ Login
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
 
-            const usernameInput = document.getElementById('username').value;
-            const passwordInput = document.getElementById('password').value;
-
-            try {
-                const res = await fetch(`${API_URL}/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: usernameInput, password: passwordInput })
-                });
-
-                const result = await res.json();
-
-                if (res.ok && result.success) {
-                    // ✅ เก็บข้อมูลสำคัญลงใน SessionStorage
-                    // 1. เก็บชื่อสำหรับแสดงผล
-                    sessionStorage.setItem('displayName', result.user.display_name);
-                    // 2. เก็บอีเมลสำหรับใช้ส่ง Nodemailer ในหน้า Dashboard (จุดสำคัญที่เคยเป็น null)
-                    sessionStorage.setItem('userEmail', usernameInput); 
-
-                    alert(`ยินดีต้อนรับคุณ ${result.user.display_name}`);
-
-                    // 🚀 ไปที่หน้า Dashboard
+            if (user !== "" && pass !== "") {
+                // ✨ ระบบดึงชื่ออัตโนมัติจากอีเมล ✨
+                // เช่น nachaphat16149@gmail.com -> nachaphat16149
+                let extractedName = user.split('@')[0];
+                
+                // ทำให้ตัวอักษรแรกเป็นตัวพิมพ์ใหญ่ (เช่น Nachaphat16149)
+                const displayName = extractedName.charAt(0).toUpperCase() + extractedName.slice(1);
+                
+                sessionStorage.setItem('displayName', displayName);
+                sessionStorage.setItem('userEmail', user);
+                
+                Swal.fire({
+                    title: 'เข้าสู่ระบบสำเร็จ!',
+                    text: `ยินดีต้อนรับคุณ ${displayName}`,
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    heightAuto: false // ป้องกันพื้นหลังเว็บหดตัว
+                }).then(() => {
                     window.location.href = 'dashboard.html';
-
-                } else {
-                    alert(result.message || 'อีเมลหรือรหัสผ่านไม่ถูกต้อง');
-                }
-            } catch (err) {
-                console.error(err);
-                alert('ไม่สามารถเชื่อมต่อ Server ได้ กรุณาตรวจสอบว่ารัน node index.js หรือยัง');
+                });
+            } else {
+                Swal.fire({
+                    title: 'ผิดพลาด', 
+                    text: 'กรุณากรอกข้อมูลให้ครบถ้วน', 
+                    icon: 'error',
+                    heightAuto: false 
+                });
             }
         });
     </script>
-
 </body>
-
 </html>

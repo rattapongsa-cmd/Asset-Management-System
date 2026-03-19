@@ -1,192 +1,103 @@
 <!DOCTYPE html>
 <html lang="th">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | Asset Flow</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap');
-
-        :root {
-            --sidebar-color: #2c3e50;
-            --bg-light: #f4f7f6;
-            --dark-green: #0A3323;
-            --moss-green: #839958;
-        }
-
-        body {
-            font-family: 'Kanit', sans-serif;
-            background-color: var(--bg-light);
-            margin: 0;
-        }
-
-        /* Sidebar Styling */
-        .sidebar {
-            width: 260px;
-            height: 100vh;
-            background: var(--sidebar-color);
-            position: fixed;
-            color: white;
-            z-index: 100;
-        }
-
-        .sidebar-header {
-            padding: 25px;
-            text-align: center;
-            background: var(--dark-green);
-            font-weight: 600;
-        }
-
-        .nav-link {
-            color: rgba(255, 255, 255, 0.7);
-            padding: 15px 25px;
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            transition: 0.3s;
-            border-left: 5px solid transparent;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border-left: 5px solid var(--moss-green);
-        }
-
-        /* Main Content */
-        .main-content {
-            margin-left: 260px;
-            padding: 30px;
-        }
-
-        .stat-card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            padding: 20px;
-            background: white;
-            transition: 0.3s;
-        }
-
-        .status-badge {
-            border-radius: 20px;
-            padding: 4px 12px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap');
+        :root { --sidebar-color: #2c3e50; --bg-light: #f4f7f6; --dark-green: #0A3323; --moss-green: #839958; }
+        body { font-family: 'Kanit', sans-serif; background-color: var(--bg-light); margin: 0; }
+        
+        .sidebar { width: 260px; height: 100vh; background: var(--sidebar-color); position: fixed; color: white; z-index: 100; }
+        .sidebar-header { padding: 25px; text-align: center; background: var(--dark-green); font-weight: 600; }
+        .nav-link { color: rgba(255, 255, 255, 0.7); padding: 15px 25px; display: flex; align-items: center; text-decoration: none; border-left: 5px solid transparent; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { background: rgba(255, 255, 255, 0.1); color: white; border-left: 5px solid var(--moss-green); }
+        
+        .main-content { margin-left: 260px; padding: 30px; }
+        .stat-card { border: none; border-radius: 15px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); padding: 20px; background: white; transition: 0.3s; }
+        .stat-card:hover { transform: translateY(-3px); }
+        .cat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
     </style>
 </head>
-
 <body>
 
     <div class="sidebar shadow">
-        <div class="sidebar-header">
-            <h4><i class="fas fa-boxes-stacked me-2"></i>ASSET FLOW</h4>
-        </div>
+        <div class="sidebar-header"><h4><i class="fas fa-boxes-stacked me-2"></i>ASSET FLOW</h4></div>
         <div class="nav flex-column mt-3">
-            <a href="dashboard.html" class="nav-link"><i class="fas fa-chart-line me-3"></i> หน้ากระดานสรุป</a>
-            <a href="my-history.html" class="nav-link"><i class="fas fa-history me-3"></i> ประวัติการยืมของฉัน</a>
+            <a href="dashboard.html" class="nav-link active"><i class="fas fa-chart-line me-3"></i> หน้าหลัก</a>
+            <a href="my-history.html" class="nav-link"><i class="fas fa-history me-3"></i> ประวัติการยืม</a>
             <a href="all-assets.html" class="nav-link"><i class="fas fa-list-check me-3"></i> ทรัพย์สินทั้งหมด</a>
             <a href="repair-list.html" class="nav-link"><i class="fas fa-tools me-3"></i> รายการแจ้งซ่อม</a>
+            <a href="report.html" class="nav-link"><i class="fas fa-file-invoice me-3"></i> ออกรายงานประจำปี</a>
             <hr class="mx-3 text-white-50">
-            <a href="javascript:void(0)" class="nav-link text-warning" onclick="confirmLogout()">
+            <a href="javascript:void(0)" class="nav-link text-warning" data-bs-toggle="modal" data-bs-target="#logoutModal">
                 <i class="fas fa-sign-out-alt me-3"></i> ออกจากระบบ
             </a>
         </div>
     </div>
 
     <div class="main-content">
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
             <div>
-                <h4 class="mb-0 text-dark">ภาพรวมระบบ (Dashboard)</h4>
-                <p class="text-muted small">ยินดีต้อนรับสู่ระบบจัดการครุภัณฑ์</p>
+                <h4 class="mb-0 text-dark fw-bold">ภาพรวมระบบ (Dashboard)</h4>
+                <p class="text-muted small mb-0">สรุปสถานะและหมวดหมู่ครุภัณฑ์ปัจจุบัน</p>
             </div>
-            <div class="d-flex align-items-center">
-                <span id="userNameDisplay" class="me-3 fw-bold text-dark">กำลังโหลด...</span>
-                <img src="logo.jpg" class="rounded-circle" width="40" height="40"
-                    onerror="this.src='https://via.placeholder.com/40'">
-            </div>
-        </div>
-
-        <div class="row g-4 mb-5">
-            <div class="col-md-3">
-                <div class="stat-card text-center">
-                    <div class="text-muted small">ครุภัณฑ์ทั้งหมด</div>
-                    <h2 id="totalCount" class="fw-bold text-primary">0</h2>
+            
+            <div class="d-flex align-items-center bg-white px-3 py-1 rounded-pill shadow-sm border" style="height: 50px;">
+                <div class="text-end me-3">
+                    <div class="fw-bold mb-0" id="userNameDisplay" style="font-size: 0.85rem; color: #2c3e50; line-height: 1.2;">กำลังโหลด...</div>
+                    <small class="text-muted" style="font-size: 0.7rem;">แผนก IT Support</small>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-card text-center">
-                    <div class="text-muted small">พร้อมใช้งาน</div>
-                    <h2 id="activeCount" class="fw-bold text-success">0</h2>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-card text-center">
-                    <div class="text-muted small">กำลังถูกยืม</div>
-                    <h2 id="borrowCount" class="fw-bold text-info">0</h2>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stat-card text-center">
-                    <div class="text-muted small">ชำรุด/รอซ่อม</div>
-                    <h2 id="repairCount" class="fw-bold text-danger">0</h2>
+                <div style="width: 38px; height: 38px; border-radius: 50%; padding: 2px; background: var(--moss-green);">
+                    <img src="logo.jpg" class="rounded-circle w-100 h-100" style="object-fit: cover; background-color: white;" onerror="this.src='https://via.placeholder.com/40'">
                 </div>
             </div>
         </div>
 
-        <div class="card stat-card bg-white p-4">
+        <div class="row g-3 mb-4">
+            <div class="col-md-3"><div class="stat-card text-center"><div class="text-muted small">ครุภัณฑ์ทั้งหมด</div><h2 id="totalCount" class="fw-bold text-primary mb-0">0</h2></div></div>
+            <div class="col-md-3"><div class="stat-card text-center"><div class="text-muted small">พร้อมใช้งาน</div><h2 id="activeCount" class="fw-bold text-success mb-0">0</h2></div></div>
+            <div class="col-md-3"><div class="stat-card text-center"><div class="text-muted small">กำลังถูกยืม</div><h2 id="borrowCount" class="fw-bold text-info mb-0">0</h2></div></div>
+            <div class="col-md-3"><div class="stat-card text-center"><div class="text-muted small">ชำรุด/รอซ่อม</div><h2 id="repairCount" class="fw-bold text-danger mb-0">0</h2></div></div>
+        </div>
+
+        <h6 class="fw-bold text-uppercase text-muted mb-3" style="font-size: 0.75rem; letter-spacing: 1px;">แยกตามหมวดหมู่</h6>
+        <div class="row g-3 mb-4">
+            <div class="col-md-3"><div class="stat-card p-3 border-start border-4 border-primary"><div class="d-flex align-items-center"><div class="cat-icon bg-primary-subtle text-primary me-3"><i class="fas fa-laptop"></i></div><div><div class="text-muted small" style="font-size: 0.7rem;">โน้ตบุ๊ค/คอม</div><h4 id="catNB" class="fw-bold mb-0">0</h4></div></div></div></div>
+            <div class="col-md-3"><div class="stat-card p-3 border-start border-4 border-success"><div class="d-flex align-items-center"><div class="cat-icon bg-success-subtle text-success me-3"><i class="fas fa-print"></i></div><div><div class="text-muted small" style="font-size: 0.7rem;">เครื่องปริ้นเตอร์</div><h4 id="catPRN" class="fw-bold mb-0">0</h4></div></div></div></div>
+            <div class="col-md-3"><div class="stat-card p-3 border-start border-4 border-warning"><div class="d-flex align-items-center"><div class="cat-icon bg-warning-subtle text-warning me-3"><i class="fas fa-chair"></i></div><div><div class="text-muted small" style="font-size: 0.7rem;">เก้าอี้/เฟอร์นิเจอร์</div><h4 id="catCHR" class="fw-bold mb-0">0</h4></div></div></div></div>
+            <div class="col-md-3"><div class="stat-card p-3 border-start border-4 border-info"><div class="d-flex align-items-center"><div class="cat-icon bg-info-subtle text-info me-3"><i class="fas fa-camera"></i></div><div><div class="text-muted small" style="font-size: 0.7rem;">กล้อง/มัลติมีเดีย</div><h4 id="catCAM" class="fw-bold mb-0">0</h4></div></div></div></div>
+        </div>
+
+        <div class="card stat-card p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h5 class="mb-0"><i class="fas fa-list me-2"></i> รายการครุภัณฑ์ทั้งหมด</h5>
-                <button class="btn btn-sm btn-outline-dark" onclick="fetchAssets()"><i class="fas fa-sync-alt"></i>
-                    รีเฟรช</button>
+                <h5 class="mb-0 fw-bold"><i class="fas fa-history me-2 text-primary"></i> 5 รายการล่าสุด</h5>
+                <button id="refreshBtn" class="btn btn-sm btn-dark px-3" onclick="fetchDashboardData()"><i class="fas fa-sync-alt me-1"></i> รีเฟรช</button>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th style="width: 15%">รหัสทรัพย์สิน</th>
-                            <th style="width: 45%">ชื่อรายการ</th>
-                            <th style="width: 20%">สถานะ</th>
-                            <th style="width: 20%" class="text-center">จัดการ</th>
-                        </tr>
-                    </thead>
+                    <thead class="table-light"><tr><th style="width: 20%">รหัสทรัพย์สิน</th><th style="width: 50%">ชื่อรายการ</th><th style="width: 30%">สถานะ</th></tr></thead>
                     <tbody id="assetList"></tbody>
                 </table>
             </div>
+            <div class="text-end mt-3"><a href="all-assets.html" class="btn btn-link btn-sm text-primary fw-bold text-decoration-none">ดูทั้งหมด <i class="fas fa-arrow-right ms-1"></i></a></div>
         </div>
     </div>
 
-    <div class="modal fade" id="borrowModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="logoutModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="border-radius: 20px;">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fw-bold"><i class="fas fa-edit me-2"></i> ทำรายการยืม</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="quickBorrowForm">
-                        <input type="hidden" id="modalAssetId">
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold">ชื่ออุปกรณ์</label>
-                            <input type="text" id="modalAssetName" class="form-control bg-light" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold">วันที่กำหนดคืน</label>
-                            <input type="date" id="modalReturnDate" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold">เหตุผลการยืม</label>
-                            <textarea id="modalReason" class="form-control" rows="3"
-                                placeholder="ระบุเหตุผล..."></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold"
-                            style="background-color: var(--dark-green); border: none;">ยืนยันการยืม</button>
-                    </form>
+            <div class="modal-content shadow-lg" style="border-radius: 20px; border: none; padding: 15px;">
+                <div class="modal-body text-center">
+                    <div class="mb-4 mt-3"><div style="width: 80px; height: 80px; background-color: #ffe6e6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;"><i class="fas fa-sign-out-alt text-danger" style="font-size: 2.5rem;"></i></div></div>
+                    <h4 class="mb-2 fw-bold">ยืนยันการออกจากระบบ?</h4><p class="text-muted mb-4">คุณแน่ใจหรือไม่ว่าต้องการออกจากระบบ Asset Flow?</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <button type="button" class="btn btn-light px-4 py-2" data-bs-dismiss="modal" style="border-radius: 12px; border: 1px solid #ddd;">ยกเลิก</button>
+                        <button type="button" class="btn btn-danger px-4 py-2" id="confirmLogoutBtn" style="border-radius: 12px;">ออกจากระบบ</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -195,137 +106,52 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const API_URL = 'http://localhost:3000/api';
-        let currentUser = "";
-        let borrowModal;
 
-        // ทำงานทันทีเมื่อโหลดหน้าเว็บ
         window.onload = function () {
-            // สร้าง Modal instance หลังจาก DOM โหลดเสร็จ เพื่อกัน Error 'backdrop'
-            borrowModal = new bootstrap.Modal(document.getElementById('borrowModal'));
-
             const name = sessionStorage.getItem('displayName');
-            const email = sessionStorage.getItem('userEmail');
-
-            if (!name) {
-                window.location.href = 'borrow.html';
-            } else {
-                currentUser = name;
-                document.getElementById('userNameDisplay').innerText = `ผู้ใช้งาน: ${name}`;
-                console.log("🔎 เมลจาก Session:", email);
-                fetchAssets();
+            // ✨ เปลี่ยนการเช็คหน้าล็อกอินเป็น borrow.html ✨
+            if (!name) window.location.href = 'borrow.html';
+            else {
+                document.getElementById('userNameDisplay').innerText = name;
+                fetchDashboardData();
             }
         };
 
-        // ดึงข้อมูลทรัพย์สินจาก MySQL
-        // ฟังก์ชันโหลดข้อมูลเข้าตาราง (เรียกใช้ซ้ำเมื่อมีการเปลี่ยนแปลง)
-        async function fetchAssets() {
+        async function fetchDashboardData() {
+            const list = document.getElementById('assetList');
+            const refreshBtn = document.getElementById('refreshBtn');
+            if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> กำลังอัปเดต...'; }
+            list.innerHTML = '<tr><td colspan="3" class="text-center py-5 text-muted"><i class="fas fa-spinner fa-spin me-2" style="font-size: 1.5rem;"></i><br><small class="mt-2 d-inline-block">กำลังดึงข้อมูลล่าสุด...</small></td></tr>';
+
             try {
-                const res = await fetch('http://localhost:3000/api/assets');
+                const res = await fetch(`${API_URL}/assets`);
                 const data = await res.json();
-                const list = document.getElementById('assetList');
+                await new Promise(resolve => setTimeout(resolve, 800));
 
-                list.innerHTML = data.map(asset => {
-                    const status = asset.status.toLowerCase();
-                    return `
-            <tr>
-                <td><span class="badge bg-dark">${asset.asset_code}</span></td>
-                <td>${asset.name}</td>
-                <td><span class="badge ${getBadgeColor(status)}">${status.toUpperCase()}</span></td>
-                <td class="text-center">
-                    ${status === 'active'
-                            ? `<button class="btn btn-sm btn-success" onclick="openBorrowModal('${asset.id}', '${asset.name}')">ยืม</button>`
-                            : status === 'borrowing'
-                                ? `<button class="btn btn-sm btn-warning" onclick="returnAsset('${asset.id}')">คืน</button>`
-                                : `<button class="btn btn-sm btn-secondary" disabled>กำลังซ่อม</button>`
-                        }
-                </td>
-            </tr>`;
-                }).join('');
-            } catch (err) { console.error(err); }
-        }
+                document.getElementById('totalCount').innerText = data.length;
+                document.getElementById('activeCount').innerText = data.filter(a => a.status.toLowerCase() === 'active').length;
+                document.getElementById('borrowCount').innerText = data.filter(a => a.status.toLowerCase() === 'borrowing').length;
+                document.getElementById('repairCount').innerText = data.filter(a => a.status.toLowerCase() === 'repair').length;
 
-        // ฟังก์ชันคืนของ (แก้ไขให้ Refresh หน้าจอ)
-        async function returnAsset(id) {
-            if (!confirm("ยืนยันการคืน?")) return;
-            const res = await fetch('http://localhost:3000/api/return', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ asset_id: id })
-            });
-            if (res.ok) {
-                alert("คืนสำเร็จ!");
-                fetchAssets(); // ✨ บรรทัดนี้จะทำให้สถานะ 'BORROWING' หายไปทันที
-            }
-        }
+                const countByCode = (prefix) => data.filter(a => a.asset_code.startsWith(prefix)).length;
+                document.getElementById('catNB').innerText = countByCode('NB');
+                document.getElementById('catPRN').innerText = countByCode('PRN');
+                document.getElementById('catCHR').innerText = countByCode('CHR');
+                document.getElementById('catCAM').innerText = countByCode('CAM');
 
-        function getBadgeColor(status) {
-            if (status === 'active') return 'bg-success';
-            if (status === 'borrowing') return 'bg-info';
-            if (status === 'repair') return 'bg-danger';
-            return 'bg-secondary';
-        }
-
-        // ฟังก์ชันจัดการคืนของ
-        async function returnAsset(id) {
-            if (!confirm("ยืนยันการคืนอุปกรณ์?")) return;
-            try {
-                const res = await fetch('http://localhost:3000/api/return', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ asset_id: id })
-                });
-                if (res.ok) {
-                    alert("คืนอุปกรณ์สำเร็จ!");
-                    // ✨ บรรทัดนี้จะทำให้ปุ่ม "คืน" หายไป และเปลี่ยนสถานะทันที
-                    fetchAssets();
+                const recent = data.slice(-5).reverse();
+                if (recent.length === 0) { list.innerHTML = '<tr><td colspan="3" class="text-center py-4">ยังไม่มีข้อมูลทรัพย์สิน</td></tr>'; } 
+                else {
+                    list.innerHTML = recent.map(asset => {
+                        const status = asset.status.toLowerCase();
+                        return `<tr><td><span class="badge bg-dark">${asset.asset_code}</span></td><td class="fw-bold">${asset.name}</td><td><span class="badge ${getBadgeColor(status)}">${status.toUpperCase()}</span></td></tr>`;
+                    }).join('');
                 }
-            } catch (err) { console.error(err); }
-        }
-
-        // เปิด Modal ยืม
-        function openBorrowModal(id, name) {
-            document.getElementById('modalAssetId').value = id;
-            document.getElementById('modalAssetName').value = name;
-            borrowModal.show();
-        }
-
-        // บันทึกการยืม + ส่งเมล
-        document.getElementById('quickBorrowForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const userEmail = sessionStorage.getItem('userEmail');
-
-            const data = {
-                asset_id: document.getElementById('modalAssetId').value,
-                borrower_name: currentUser,
-                borrow_date: new Date().toISOString().split('T')[0],
-                return_date: document.getElementById('modalReturnDate').value,
-                reason: document.getElementById('modalReason').value,
-                user_email: userEmail
-            };
-
-            try {
-                const res = await fetch(`${API_URL}/borrow`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await res.json();
-                if (result.success) {
-                    alert('ยืมอุปกรณ์สำเร็จ! กรุณาตรวจสอบอีเมลยืนยันใน Inbox');
-                    borrowModal.hide();
-                    fetchAssets();
-                } else {
-                    alert('Error: ' + result.error);
-                }
-            } catch (err) { alert('ติดต่อ Server ไม่ได้'); }
-        });
-
-        // ออกจากระบบ
-        function confirmLogout() {
-            if (confirm("คุณต้องการออกจากระบบใช่หรือไม่?")) {
-                sessionStorage.clear();
-                window.location.href = 'borrow.html';
+            } catch (err) { 
+                Swal.fire('ข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อฐานข้อมูลได้', 'error');
+                list.innerHTML = '<tr><td colspan="3" class="text-center text-danger py-4">โหลดข้อมูลล้มเหลว</td></tr>';
+            } finally { 
+                if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.innerHTML = '<i class="fas fa-sync-alt me-1"></i> รีเฟรช'; }
             }
         }
 
@@ -335,7 +161,12 @@
             if (status === 'repair') return 'bg-danger-subtle text-danger';
             return 'bg-secondary-subtle text-secondary';
         }
+
+        document.getElementById('confirmLogoutBtn').addEventListener('click', () => {
+            sessionStorage.clear();
+            // ✨ เปลี่ยนปุ่มออกจากระบบให้วิ่งไปที่ borrow.html ✨
+            window.location.href = 'borrow.html';
+        });
     </script>
 </body>
-
 </html>
