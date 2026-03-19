@@ -68,9 +68,3 @@
     เข้าใช้งานผ่าน Browser ที่ `http://localhost:5500/frontend/borrow.html` (หรือตามพอร์ตที่คุณใช้งาน)
 
 -----
-
-## 📸 Screenshots (ตัวอย่างหน้าจอ)
-
-| หน้าเข้าสู่ระบบ | หน้า Dashboard |
-|---|---|
-|  |  |
